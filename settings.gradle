@@ -1,2 +1,2 @@
-include ':app', ':model'
+include ':app', ':model', ':shared'
 rootProject.name='Wezup'
