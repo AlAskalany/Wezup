@@ -17,6 +17,7 @@ buildscript {
         testRunnerVer = '1.2.0'
         lifecycleExtensionsVer = '2.0.0'
         lifecycleViewModelVer = '2.0.0'
+        recyclerViewVer = '1.0.0'
     }
     repositories {
         google()

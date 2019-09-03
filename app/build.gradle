@@ -38,4 +38,5 @@ dependencies {
     testImplementation "junit:junit:${junitVer}"
     androidTestImplementation "androidx.test:runner:${testRunnerVer}"
     androidTestImplementation "androidx.test.espresso:espresso-core:${espressoVer}"
+    implementation "androidx.recyclerview:recyclerview:${recyclerViewVer}"
 }
