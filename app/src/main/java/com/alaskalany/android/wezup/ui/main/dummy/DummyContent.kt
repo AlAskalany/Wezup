@@ -36,25 +36,25 @@ object DummyContent {
 
     private fun createDummyItem(position: Int): DummyItem {
         when (position) {
-            0 -> {
+            1 -> {
                 return DummyItem(position.toString(), "Monday", "Cloudy", "", "")
             }
-            1 -> {
+            2 -> {
                 return DummyItem(position.toString(), "Tuesday", "Rainy", "", "")
             }
-            2 -> {
+            3 -> {
                 return DummyItem(position.toString(), "Wednesday", "Cloudy", "", "")
             }
-            3 -> {
+            4 -> {
                 return DummyItem(position.toString(), "Thursday", "Cloudy", "", "")
             }
-            4 -> {
+            5 -> {
                 return DummyItem(position.toString(), "Friday", "Sunny", "", "")
             }
-            5 -> {
+            6 -> {
                 return DummyItem(position.toString(), "Saturday", "Cloudy", "", "")
             }
-            6 -> {
+            7 -> {
                 return DummyItem(position.toString(), "Sunday", "Rainy", "", "")
             }
             else -> {
