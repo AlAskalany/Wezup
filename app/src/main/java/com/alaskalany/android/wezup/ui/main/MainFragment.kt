@@ -32,6 +32,8 @@ class MainFragment : Fragment(), LocationListener {
 
     private lateinit var binding: MainFragmentBinding
 
+    private lateinit var locationManager: LocationManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -76,12 +78,6 @@ class MainFragment : Fragment(), LocationListener {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         binding.model = viewModel
-    }
-
-    private lateinit var locationManager: LocationManager
-
-    override fun onResume() {
-        super.onResume()
         locationManager = activity?.getSystemService(Service.LOCATION_SERVICE) as LocationManager
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
@@ -129,10 +125,11 @@ class MainFragment : Fragment(), LocationListener {
     }
 
     //<editor-fold desc="LocationListener">
-    override fun onLocationChanged(p0: Location?) {
-        val s =
-            "locationChanged\nlatitude:${p0?.latitude.toString()} longitude:${p0?.longitude.toString()}"
-        shortToast(s)
+    override fun onLocationChanged(location: Location?) {
+        if (::viewModel.isInitialized) {
+            location?.latitude?.toString()?.let { viewModel.setLatitude(it) }
+            location?.longitude?.toString()?.let { viewModel.setLongitude(it) }
+        }
     }
 
     override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {
