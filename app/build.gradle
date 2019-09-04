@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion compileSdkVer
     buildToolsVersion buildToolsVer
@@ -25,6 +27,9 @@ android {
         sourceCompatibility = sourceCompatibilityVer
         targetCompatibility = targetCompatibilityVer
     }
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -35,6 +40,8 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:${constraintLayoutVer}"
     implementation "androidx.lifecycle:lifecycle-extensions:${lifecycleExtensionsVer}"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${lifecycleViewModelVer}"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
     testImplementation "junit:junit:${junitVer}"
     androidTestImplementation "androidx.test:runner:${testRunnerVer}"
     androidTestImplementation "androidx.test.espresso:espresso-core:${espressoVer}"
