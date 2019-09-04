@@ -40,8 +40,10 @@ class MyItemRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
-        holder.mIdView.text = item.id
-        holder.mContentView.text = item.content
+        holder.mDayTextView.text = item.day
+        holder.mWeatherSummaryTextView.text = item.weatherSummary
+        holder.mTempMaxTextView.text = item.temperatureMax
+        holder.mTempMinTextView.text = item.temperatureMin
 
         with(holder.mView) {
             tag = item
@@ -52,11 +54,13 @@ class MyItemRecyclerViewAdapter(
     override fun getItemCount(): Int = mValues.size
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        val mIdView: TextView = mView.item_number
-        val mContentView: TextView = mView.content
+        val mDayTextView: TextView = mView.textView_day
+        val mWeatherSummaryTextView: TextView = mView.textView_weather_summary
+        val mTempMaxTextView: TextView = mView.textView_temperature_max
+        val mTempMinTextView: TextView = mView.textView_temperature_min
 
         override fun toString(): String {
-            return super.toString() + " '" + mContentView.text + "'"
+            return super.toString() + " '" + mDayTextView.text + "'"
         }
     }
 }

@@ -1,10 +1,18 @@
 package com.alaskalany.android.wezup.ui.main
 
+import android.Manifest
+import android.app.Service
 import android.content.Context
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -14,8 +22,8 @@ import com.alaskalany.android.wezup.R
 import com.alaskalany.android.wezup.databinding.MainFragmentBinding
 import com.alaskalany.android.wezup.ui.main.dummy.DummyContent
 
-class MainFragment : Fragment() {
-    
+class MainFragment : Fragment(), LocationListener {
+
     private var columnCount = 1
 
     private var listener: OnListFragmentInteractionListener? = null
@@ -23,6 +31,8 @@ class MainFragment : Fragment() {
     private lateinit var viewModel: MainViewModel
 
     private lateinit var binding: MainFragmentBinding
+
+    private lateinit var locationManager: LocationManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +78,34 @@ class MainFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         binding.model = viewModel
+        locationManager = activity?.getSystemService(Service.LOCATION_SERVICE) as LocationManager
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            locationManager.requestLocationUpdates(
+                LocationManager.GPS_PROVIDER,
+                1000L,
+                100.0F,
+                this
+            )
+        } else {
+            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 1) {
+
+        } else {
+
+        }
     }
 
     /**
@@ -84,6 +122,35 @@ class MainFragment : Fragment() {
     interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         fun onListFragmentInteraction(item: DummyContent.DummyItem?)
+    }
+
+    //<editor-fold desc="LocationListener">
+    override fun onLocationChanged(location: Location?) {
+        if (::viewModel.isInitialized) {
+            location?.latitude?.toString()?.let { viewModel.setLatitude(it) }
+            location?.longitude?.toString()?.let { viewModel.setLongitude(it) }
+        }
+    }
+
+    override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {
+        shortToast("statusChanged $p0")
+    }
+
+    override fun onProviderEnabled(p0: String?) {
+        shortToast("providerEnabled $p0")
+    }
+
+    override fun onProviderDisabled(p0: String?) {
+        shortToast("providerDisabled $p0")
+    }
+    //</editor-fold>
+
+    private fun shortToast(s: String) {
+        Toast.makeText(
+            requireContext(),
+            s,
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     companion object {
