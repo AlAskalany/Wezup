@@ -12,7 +12,7 @@ data class AlertDto(
     @field:Json(name = "severity")
     val severity: String? = "",
     @field:Json(name = "time")
-    val time: Int? = 0,
+    val time: Double? = 0.0,
     @field:Json(name = "expires")
     val expires: Double? = 0.0,
     @field:Json(name = "")

@@ -20,7 +20,7 @@ data class ForecastDto(
     @field:Json(name = "alerts")
     val alerts: List<AlertDto?>? = listOf(),
     @field:Json(name = "flags")
-    val flags: Flags? = Flags(),
+    val flags: FlagsDto? = FlagsDto(),
     @field:Json(name = "offset")
     val offset: Double? = 0.0
 )

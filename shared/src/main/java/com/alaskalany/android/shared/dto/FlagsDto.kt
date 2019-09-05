@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class Flags(
+data class FlagsDto(
     @field:Json(name = "sources")
     val sources: List<String?>? = listOf(),
     @field:Json(name = "meteoalarm-license")
