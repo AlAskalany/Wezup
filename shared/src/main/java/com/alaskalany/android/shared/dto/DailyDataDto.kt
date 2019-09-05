@@ -1,0 +1,86 @@
+package com.alaskalany.android.shared.dto
+
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = true)
+data class DailyDataDto(
+    @field:Json(name = "time")
+    val time: Double? = 0.0,
+    @field:Json(name = "summary")
+    val summary: String? = "",
+    @field:Json(name = "icon")
+    val icon: String? = "",
+    @field:Json(name = "sunriseTime")
+    val sunriseTime: Double? = 0.0,
+    @field:Json(name = "sunsetTime")
+    val sunsetTime: Double? = 0.0,
+    @field:Json(name = "moonPhase")
+    val moonPhase: Double? = 0.0,
+    @field:Json(name = "precipIntensity")
+    val precipIntensity: Double? = 0.0,
+    @field:Json(name = "precipIntensityMax")
+    val precipIntensityMax: Double? = 0.0,
+    @field:Json(name = "precipIntensityMaxTime")
+    val precipIntensityMaxTime: Double? = 0.0,
+    @field:Json(name = "precipProbability")
+    val precipProbability: Double? = 0.0,
+    @field:Json(name = "precipType")
+    val precipType: String? = "",
+    @field:Json(name = "temperatureHigh")
+    val temperatureHigh: Double? = 0.0,
+    @field:Json(name = "temperatureHighTime")
+    val temperatureHighTime: Double? = 0.0,
+    @field:Json(name = "temperatureLow")
+    val temperatureLow: Double? = 0.0,
+    @field:Json(name = "temperatureLowTime")
+    val temperatureLowTime: Double? = 0.0,
+    @field:Json(name = "apparentTemperatureHigh")
+    val apparentTemperatureHigh: Double? = 0.0,
+    @field:Json(name = "apparentTemperatureHighTime")
+    val apparentTemperatureHighTime: Double? = 0.0,
+    @field:Json(name = "apparentTemperatureLow")
+    val apparentTemperatureLow: Double? = 0.0,
+    @field:Json(name = "apparentTemperatureLowTime")
+    val apparentTemperatureLowTime: Double? = 0.0,
+    @field:Json(name = "dewPoint")
+    val dewPoint: Double? = 0.0,
+    @field:Json(name = "humidity")
+    val humidity: Double? = 0.0,
+    @field:Json(name = "pressure")
+    val pressure: Double? = 0.0,
+    @field:Json(name = "windSpeed")
+    val windSpeed: Double? = 0.0,
+    @field:Json(name = "windGust")
+    val windGust: Double? = 0.0,
+    @field:Json(name = "windGustTime")
+    val windGustTime: Double? = 0.0,
+    @field:Json(name = "windBearing")
+    val windBearing: Double? = 0.0,
+    @field:Json(name = "cloudCover")
+    val cloudCover: Double? = 0.0,
+    @field:Json(name = "uvIndex")
+    val uvIndex: Double? = 0.0,
+    @field:Json(name = "uvIndexTime")
+    val uvIndexTime: Double? = 0.0,
+    @field:Json(name = "visibility")
+    val visibility: Double? = 0.0,
+    @field:Json(name = "ozone")
+    val ozone: Double? = 0.0,
+    @field:Json(name = "temperatureMin")
+    val temperatureMin: Double? = 0.0,
+    @field:Json(name = "temperatureMinTime")
+    val temperatureMinTime: Double? = 0.0,
+    @field:Json(name = "temperatureMax")
+    val temperatureMax: Double? = 0.0,
+    @field:Json(name = "temperatureMaxTime")
+    val temperatureMaxTime: Double? = 0.0,
+    @field:Json(name = "apparentTemperatureMin")
+    val apparentTemperatureMin: Double? = 0.0,
+    @field:Json(name = "apparentTemperatureMinTime")
+    val apparentTemperatureMinTime: Double? = 0.0,
+    @field:Json(name = "apparentTemperatureMax")
+    val apparentTemperatureMax: Double? = 0.0,
+    @field:Json(name = "apparentTemperatureMaxTime")
+    val apparentTemperatureMaxTime: Double? = 0.0
+)

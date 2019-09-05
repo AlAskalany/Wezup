@@ -1,6 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion compileSdkVer
     buildToolsVersion buildToolsVer
@@ -26,15 +28,32 @@ android {
         sourceCompatibility = sourceCompatibilityVer
         targetCompatibility = targetCompatibilityVer
     }
-
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${kotlinxCoroutinesAndroidVer}"
     implementation "androidx.appcompat:appcompat:${appCompatVer}"
     implementation "androidx.core:core-ktx:${coteKtxVer}"
     testImplementation "junit:junit:${junitVer}"
     androidTestImplementation "androidx.test:runner:${testRunnerVer}"
     androidTestImplementation "androidx.test.espresso:espresso-core:${espressoVer}"
+
+    // OkHttp (Keep 3.12.x for compatibility with minSdk<21)
+    implementation "com.squareup.okhttp3:okhttp:${okHttp3Ver}"
+    testImplementation "com.squareup.okhttp3:mockwebserver:${okHttp3Ver}"
+
+    // Moshi
+    implementation "com.squareup.moshi:moshi-kotlin:${moshiVer}"
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:${moshiVer}"
+
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:${retrofitVer}"
+    implementation "com.squareup.retrofit2:converter-moshi:${retrofitVer}"
+
+    implementation project(path: ':model')
 }
