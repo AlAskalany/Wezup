@@ -24,6 +24,6 @@ interface WeatherService {
         @Query("exclude")
         exclude: String = DataBlock.ALERTS.value,
         @Query("units")
-        units: String = ForecastUnits.US.value
+        units: String = ForecastUnits.SI.value
     ): Response<ForecastDto>
 }

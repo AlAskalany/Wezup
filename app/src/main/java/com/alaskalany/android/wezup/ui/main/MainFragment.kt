@@ -21,8 +21,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.alaskalany.android.wezup.R
 import com.alaskalany.android.wezup.databinding.MainFragmentBinding
 import com.alaskalany.android.wezup.ui.main.dummy.DummyContent
+import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 
-class MainFragment : Fragment(), LocationListener {
+class MainFragment : Fragment(), CoroutineScope, LocationListener {
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job
+
+    private lateinit var job: Job
 
     private var columnCount = 1
 
@@ -62,6 +68,7 @@ class MainFragment : Fragment(), LocationListener {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        job = SupervisorJob()
         if (context is OnListFragmentInteractionListener) {
             listener = context
         } else {
@@ -72,6 +79,7 @@ class MainFragment : Fragment(), LocationListener {
     override fun onDetach() {
         super.onDetach()
         listener = null
+        job.cancel()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -129,6 +137,9 @@ class MainFragment : Fragment(), LocationListener {
         if (::viewModel.isInitialized) {
             location?.latitude?.toString()?.let { viewModel.setLatitude(it) }
             location?.longitude?.toString()?.let { viewModel.setLongitude(it) }
+            launch {
+                viewModel.setLocation(location)
+            }
         }
     }
 

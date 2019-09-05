@@ -1,11 +1,17 @@
 package com.alaskalany.android.wezup.ui.main
 
+import android.location.Location
 import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.alaskalany.android.model.ICurrently
+import com.alaskalany.android.shared.WeatherRepository
 
 class MainViewModel : ViewModel() {
+
+    private val weatherRepository: WeatherRepository = WeatherRepository()
+
     private val _temperatureLiveData: MutableLiveData<String> = MutableLiveData()
 
     val temperature: LiveData<String>
@@ -59,5 +65,28 @@ class MainViewModel : ViewModel() {
     @MainThread
     fun setLongitude(text: String) {
         _longitude.value = text
+    }
+
+    private suspend fun getForecast(latitude: String, longitude: String) {
+        val forecast = weatherRepository.fetchForecast(
+            "dafc50f09edd941ce1876d78a0a31b77",
+            latitude,
+            longitude
+        )
+
+        println(forecast)
+
+        val currently = forecast?.currently as ICurrently?
+        _weatherDescriptionLiveData.value = currently?.summary
+        _timeZoneLiveData.value = forecast?.timezone
+        _temperatureLiveData.value = (forecast?.currently as ICurrently?)?.temperature?.toString()
+    }
+
+    suspend fun setLocation(location: Location?) {
+        if (location != null) {
+            val lat = location.latitude.toString()
+            val long = location.longitude.toString()
+            getForecast(lat, long)
+        }
     }
 }

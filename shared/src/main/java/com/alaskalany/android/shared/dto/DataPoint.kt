@@ -1,5 +1,6 @@
 package com.alaskalany.android.shared.dto
 
+import com.alaskalany.android.model.ICurrently
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -15,7 +16,7 @@ data class DataPoint @JvmOverloads constructor(
      * [DataPoint] objects to midnight of the day, all according to the local time zone.
      */
     @field:Json(name = "time")
-    val time: Double? = null,
+    override val time: Double? = null,
     //</editor-fold>
 
     //<editor-fold desc="Optional">
@@ -26,7 +27,7 @@ data class DataPoint @JvmOverloads constructor(
      * values, so don’t use it for automated purposes: use the icon property, instead!)
      */
     @field:Json(name = "summary")
-    val summary: String? = null,
+    override val summary: String? = null,
 
     /**
      *  optional
@@ -39,7 +40,7 @@ data class DataPoint @JvmOverloads constructor(
      *  the future.)
      */
     @field:Json(name = "icon")
-    val icon: String? = null,
+    override val icon: String? = null,
 
     /**
      * optional
@@ -49,7 +50,7 @@ data class DataPoint @JvmOverloads constructor(
      * at all).
      */
     @field:Json(name = "precipIntensity")
-    val precipIntensity: Double? = null,
+    override val precipIntensity: Double? = null,
 
     /**
      * optional
@@ -57,7 +58,7 @@ data class DataPoint @JvmOverloads constructor(
      * The probability of precipitation occurring, between 0 and 1, inclusive.
      */
     @field:Json(name = "precipProbability")
-    val precipProbability: Double? = null,
+    override val precipProbability: Double? = null,
 
     /**
      * optional
@@ -77,7 +78,7 @@ data class DataPoint @JvmOverloads constructor(
      * The dew point in degrees Fahrenheit.
      */
     @field:Json(name = "dewPoint")
-    val dewPoint: Double? = null,
+    override val dewPoint: Double? = null,
 
     /**
      * optional
@@ -85,7 +86,7 @@ data class DataPoint @JvmOverloads constructor(
      * The relative humidity, between 0 and 1, inclusive.
      */
     @field:Json(name = "humidity")
-    val humidity: Double? = null,
+    override val humidity: Double? = null,
 
     /**
      * optional
@@ -93,7 +94,7 @@ data class DataPoint @JvmOverloads constructor(
      * The sea-level air pressure in millibars.
      */
     @field:Json(name = "pressure")
-    val pressure: Double? = null,
+    override val pressure: Double? = null,
 
     /**
      * optional
@@ -101,7 +102,7 @@ data class DataPoint @JvmOverloads constructor(
     The wind speed in miles per hour.
      */
     @field:Json(name = "windSpeed")
-    val windSpeed: Double? = null,
+    override val windSpeed: Double? = null,
 
     /**
      *  optional
@@ -109,7 +110,7 @@ data class DataPoint @JvmOverloads constructor(
     The wind gust speed in miles per hour.
      */
     @field:Json(name = "windGust")
-    val windGust: Double? = null,
+    override val windGust: Double? = null,
 
     /**
      * optional
@@ -117,7 +118,7 @@ data class DataPoint @JvmOverloads constructor(
     The direction that the wind is coming from in degrees, with true north at 0° and progressing clockwise. (If windSpeed is zero, then this value will not be defined.)
      */
     @field:Json(name = "windBearing")
-    val windBearing: Double? = null,
+    override val windBearing: Double? = null,
 
     /**
      * optional
@@ -125,7 +126,7 @@ data class DataPoint @JvmOverloads constructor(
      * The percentage of sky occluded by clouds, between 0 and 1, inclusive.
      */
     @field:Json(name = "cloudCover")
-    val cloudCover: Double? = null,
+    override val cloudCover: Double? = null,
 
     /**
      * optional
@@ -133,7 +134,7 @@ data class DataPoint @JvmOverloads constructor(
     The UV index.
      */
     @field:Json(name = "uvIndex")
-    val uvIndex: Double? = null,
+    override val uvIndex: Double? = null,
 
     /**
      * optional
@@ -141,7 +142,7 @@ data class DataPoint @JvmOverloads constructor(
     The average visibility in miles, capped at 10 miles.
      */
     @field:Json(name = "visibility")
-    val visibility: Double? = null,
+    override val visibility: Double? = null,
 
     /**
      * optional
@@ -149,7 +150,7 @@ data class DataPoint @JvmOverloads constructor(
      * The columnar density of total atmospheric ozone at the given time in Dobson units.
      */
     @field:Json(name = "ozone")
-    val ozone: Double? = null,
+    override val ozone: Double? = null,
     //</editor-fold>
 
     //<editor-fold desc="Daily">
@@ -348,7 +349,7 @@ data class DataPoint @JvmOverloads constructor(
      * The air temperature in degrees Fahrenheit.
      */
     @field:Json(name = "temperature")
-    val temperature: Double? = null,
+    override val temperature: Double? = null,
 
     /**
      * optional, only on hourly
@@ -356,7 +357,7 @@ data class DataPoint @JvmOverloads constructor(
     The apparent (or “feels like”) temperature in degrees Fahrenheit.
      */
     @field:Json(name = "apparentTemperature")
-    val apparentTemperature: Double? = null,
+    override val apparentTemperature: Double? = null,
     //</editor-fold>
 
     //<editor-fold desc="Currently">
@@ -368,6 +369,6 @@ data class DataPoint @JvmOverloads constructor(
      * of that location.)
      */
     @field:Json(name = "nearestStormDistance")
-    val nearestStormDistance: Double? = null
+    override val nearestStormDistance: Double? = null
     //</editor-fold>
-)
+): ICurrently
