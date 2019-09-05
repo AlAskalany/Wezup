@@ -6,11 +6,11 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class FlagsDto(
     @field:Json(name = "sources")
-    val sources: List<String?>? = listOf(),
+    val sources: List<String?>? = null,
     @field:Json(name = "meteoalarm-license")
-    val meteoalarmLicense: String? = "",
+    val meteoalarmLicense: String? = null,
     @field:Json(name = "nearest-station")
-    val nearestStation: Double? = 0.0,
+    val nearestStation: Double? = null,
     @field:Json(name = "units")
-    val units: String? = ""
+    val units: String? = null
 )

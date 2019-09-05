@@ -6,9 +6,9 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class DailyDto(
     @field:Json(name = "summary")
-    val summary: String? = "",
+    val summary: String? = null,
     @field:Json(name = "icon")
-    val icon: String? = "",
+    val icon: String? = null,
     @field:Json(name = "data")
-    val `data`: List<DailyDataDto?>? = listOf()
+    val `data`: List<DailyDataDto?>? = null
 )

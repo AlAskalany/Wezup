@@ -5,22 +5,27 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class ForecastDto(
+    // required
     @field:Json(name = "latitude")
-    val latitude: Double? = 0.0,
+    val latitude: Double? = null,
+    // required
     @field:Json(name = "longitude")
-    val longitude: Double? = 0.0,
+    val longitude: Double? = null,
     @field:Json(name = "timezone")
-    val timezone: String? = "",
+    // required
+    val timezone: String? = null,
+    // optional
     @field:Json(name = "currently")
-    val currently: CurrentlyDto? = CurrentlyDto(),
+    val currently: CurrentlyDto? = null,
+    // optional
     @field:Json(name = "hourly")
-    val hourly: HourlyDto? = HourlyDto(),
+    val hourly: HourlyDto? = null,
     @field:Json(name = "daily")
-    val daily: DailyDto? = DailyDto(),
+    val daily: DailyDto? = null,
     @field:Json(name = "alerts")
-    val alerts: List<AlertDto?>? = listOf(),
+    val alerts: List<AlertDto?>? = null,
     @field:Json(name = "flags")
-    val flags: FlagsDto? = FlagsDto(),
+    val flags: FlagsDto? = null,
     @field:Json(name = "offset")
-    val offset: Double? = 0.0
+    val offset: Double? = null
 )
