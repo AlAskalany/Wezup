@@ -27,7 +27,12 @@ class NetworkClientTest {
     fun getInstance() {
         runBlocking {
             val response =
-                weatherService.forecast("dafc50f09edd941ce1876d78a0a31b77", "42.3601", "-71.0589")
+                weatherService.forecast(
+                    "dafc50f09edd941ce1876d78a0a31b77",
+                    "42.3601",
+                    "-71.0589",
+                    "ar"
+                )
             println(response.body())
             assertTrue(response.isSuccessful)
             assertNotNull(response.body())
