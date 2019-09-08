@@ -1,5 +1,8 @@
 package com.alaskalany.android.model
 
+import java.text.SimpleDateFormat
+import java.util.*
+
 data class DailyData(
     override val time: Double? = 0.0,
     override val summary: String? = "",
@@ -41,3 +44,11 @@ data class DailyData(
     override val apparentTemperatureMax: Double? = 0.0,
     override val apparentTemperatureMaxTime: Double? = 0.0
 ) : IDailyData
+
+fun Long.getDayName(): String? {
+    val asd = Date().apply {
+        time = this@getDayName * 1000
+    }
+    val outFormat = SimpleDateFormat("EEEE")
+    return outFormat.format(asd)
+}

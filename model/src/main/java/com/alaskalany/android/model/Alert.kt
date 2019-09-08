@@ -1,11 +1,11 @@
 package com.alaskalany.android.model
 
 data class Alert(
-    val title: String? = "",
-    val regions: List<String?>? = listOf(),
-    val severity: String? = "",
-    val time: Double? = 0.0,
-    val expires: Double? = 0.0,
-    val description: String? = "description",
-    val uri: String? = ""
-)
+    override val title: String? = "",
+    override val regions: List<String?>? = listOf(),
+    override val severity: String? = "",
+    override val time: Double? = 0.0,
+    override val expires: Double? = 0.0,
+    override val description: String? = "description",
+    override val uri: String? = ""
+) : IAlert

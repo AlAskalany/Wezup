@@ -15,31 +15,29 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.alaskalany.android.model.IDailyData
 import com.alaskalany.android.wezup.R
 import com.alaskalany.android.wezup.databinding.MainFragmentBinding
-import com.alaskalany.android.wezup.ui.main.dummy.DummyContent
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
 class MainFragment : Fragment(), CoroutineScope, LocationListener {
+
+    //</editor-fold>
+
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + job
-
     private lateinit var job: Job
-
     private var columnCount = 1
-
     private var listener: OnListFragmentInteractionListener? = null
-
     private lateinit var viewModel: MainViewModel
-
     private lateinit var binding: MainFragmentBinding
-
     private lateinit var locationManager: LocationManager
-
+    private val dailyDataList: MutableList<IDailyData?> = mutableListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -61,7 +59,7 @@ class MainFragment : Fragment(), CoroutineScope, LocationListener {
                 columnCount <= 1 -> LinearLayoutManager(context)
                 else -> GridLayoutManager(context, columnCount)
             }
-            adapter = MyItemRecyclerViewAdapter(DummyContent.ITEMS, listener)
+            adapter = MyItemRecyclerViewAdapter(dailyDataList, listener)
         }
         return view
     }
@@ -86,6 +84,25 @@ class MainFragment : Fragment(), CoroutineScope, LocationListener {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         binding.model = viewModel
+
+        viewModel.weatherIcon.observe(this, Observer { icon ->
+            icon?.let {
+                binding.imageViewCurrentWeatherIcon.setImageDrawable(
+                    resources.getDrawable(
+                        getWeatherIconDrawable(it)
+                    )
+                )
+            }
+        })
+
+        viewModel.daily.observe(this, Observer { newList ->
+            newList?.let {
+                dailyDataList.clear()
+                dailyDataList.addAll(it)
+                binding.recyclerViewMain.adapter?.notifyDataSetChanged()
+            }
+        })
+
         locationManager = activity?.getSystemService(Service.LOCATION_SERVICE) as LocationManager
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
@@ -116,22 +133,6 @@ class MainFragment : Fragment(), CoroutineScope, LocationListener {
         }
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson
-     * [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
-    interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onListFragmentInteraction(item: DummyContent.DummyItem?)
-    }
-
     //<editor-fold desc="LocationListener">
     override fun onLocationChanged(location: Location?) {
         if (::viewModel.isInitialized) {
@@ -154,7 +155,6 @@ class MainFragment : Fragment(), CoroutineScope, LocationListener {
     override fun onProviderDisabled(p0: String?) {
         shortToast("providerDisabled $p0")
     }
-    //</editor-fold>
 
     private fun shortToast(s: String) {
         Toast.makeText(
@@ -162,6 +162,22 @@ class MainFragment : Fragment(), CoroutineScope, LocationListener {
             s,
             Toast.LENGTH_SHORT
         ).show()
+    }
+
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     *
+     *
+     * See the Android Training lesson
+     * [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html)
+     * for more information.
+     */
+    interface OnListFragmentInteractionListener {
+        // TODO: Update argument type and name
+        fun onListFragmentInteraction(item: IDailyData?)
     }
 
     companion object {

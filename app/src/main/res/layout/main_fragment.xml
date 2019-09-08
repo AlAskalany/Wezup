@@ -32,85 +32,68 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:layout_weight="1">
-
-                    <include
-                        android:id="@+id/include"
-                        layout="@layout/weather"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        app:layout_constraintBottom_toTopOf="@+id/textView_temperature"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView_time_zone"
-                        app:model="@{model}" />
-
-                    <TextView
-                        android:id="@+id/textView_temperature"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{model.temperature}"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                        app:layout_constraintBottom_toTopOf="@+id/textView_weather_description"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/include"
-                        tools:text="19" />
-
-                    <TextView
-                        android:id="@+id/textView_weather_description"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{model.weatherDescription}"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView_temperature"
-                        tools:text="Clear Sky" />
-
-                    <TextView
-                        android:id="@+id/textView_celsius_symbol"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/celsius_symbol"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        app:layout_constraintStart_toEndOf="@+id/textView_temperature"
-                        app:layout_constraintTop_toTopOf="@+id/textView_temperature" />
-
-                    <TextView
-                        android:id="@+id/textView_latitude"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:text="@{model.latitude}"
-                        app:layout_constraintEnd_toStartOf="@+id/include"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/textView_longitude"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{model.longitude}"
-                        app:layout_constraintEnd_toEndOf="@+id/textView_latitude"
-                        app:layout_constraintStart_toStartOf="@+id/textView_latitude"
-                        app:layout_constraintTop_toBottomOf="@+id/textView_latitude" />
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:id="@+id/textView_time_zone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
+                        android:layout_marginBottom="8dp"
                         android:text="@{model.timeZone}"
+                        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="Stockholm, Sweden" />
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toTopOf="@+id/textView_weather_description"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView_time_zone">
+
+                        <ImageView
+                            android:id="@+id/imageView_current_weather_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/ic_clear_day" />
+
+                        <TextView
+                            android:id="@+id/textView_temperature"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{model.temperature}"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                            android:textSize="36sp"
+                            tools:text="19°" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/textView_weather_description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="16dp"
+                        android:text="@{model.weatherDescription}"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+                        tools:text="Clear Sky" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.recyclerview.widget.RecyclerView

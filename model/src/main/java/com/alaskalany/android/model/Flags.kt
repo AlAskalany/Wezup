@@ -1,8 +1,8 @@
 package com.alaskalany.android.model
 
 data class Flags(
-    val sources: List<String?>? = listOf(),
-    val meteoalarmLicense: String? = "",
-    val nearestStation: Double? = 0.0,
-    val units: String? = ""
-)
+    override val sources: List<String?>? = listOf(),
+    override val meteoalarmLicense: String? = "",
+    override val nearestStation: Double? = 0.0,
+    override val units: String? = ""
+) : IFlags

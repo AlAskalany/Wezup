@@ -5,8 +5,10 @@ import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.alaskalany.android.model.ICurrently
+import com.alaskalany.android.model.IDailyData
+import com.alaskalany.android.model.IForecast
 import com.alaskalany.android.shared.WeatherRepository
+import kotlin.math.roundToInt
 
 class MainViewModel : ViewModel() {
 
@@ -24,28 +26,26 @@ class MainViewModel : ViewModel() {
 
     private val _sunnyLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
-    val sunny: LiveData<Boolean>
-        get() = _sunnyLiveData
-
     private val _cloudyLiveData: MutableLiveData<Boolean> = MutableLiveData()
-
-    val cloudy: LiveData<Boolean>
-        get() = _cloudyLiveData
 
     private val _latitude: MutableLiveData<String> = MutableLiveData()
 
-    val latitude: LiveData<String>
-        get() = _latitude
-
     private val _longitude: MutableLiveData<String> = MutableLiveData()
-
-    val longitude: LiveData<String>
-        get() = _longitude
 
     private val _timeZoneLiveData: MutableLiveData<String> = MutableLiveData()
 
     val timeZone: LiveData<String>
         get() = _timeZoneLiveData
+
+    private val _dailyLiveData: MutableLiveData<List<IDailyData?>?> = MutableLiveData()
+
+    val daily: LiveData<List<IDailyData?>?>
+        get() = _dailyLiveData
+
+    private var _weatherIcon: MutableLiveData<String> = MutableLiveData()
+
+    val weatherIcon: LiveData<String>
+        get() = _weatherIcon
 
     init {
         _temperatureLiveData.value = "12"
@@ -76,10 +76,20 @@ class MainViewModel : ViewModel() {
 
         println(forecast)
 
-        val currently = forecast?.currently as ICurrently?
+        updateCurrently(forecast)
+        updateDaily(forecast)
+    }
+
+    private fun updateDaily(forecast: IForecast?) {
+        _dailyLiveData.value = forecast?.daily?.data
+    }
+
+    private fun updateCurrently(forecast: IForecast?) {
+        val currently = forecast?.currently
+        _weatherIcon.value = currently?.icon
         _weatherDescriptionLiveData.value = currently?.summary
-        _timeZoneLiveData.value = forecast?.timezone
-        _temperatureLiveData.value = (forecast?.currently as ICurrently?)?.temperature?.toString()
+        _timeZoneLiveData.value = forecast?.timezone?.replace("_", " ")
+        _temperatureLiveData.value = forecast?.currently?.temperature?.roundToInt()?.toString()
     }
 
     suspend fun setLocation(location: Location?) {
