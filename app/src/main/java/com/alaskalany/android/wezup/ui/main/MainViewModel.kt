@@ -1,5 +1,6 @@
 package com.alaskalany.android.wezup.ui.main
 
+import android.location.Location
 import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -91,10 +92,11 @@ class MainViewModel : ViewModel() {
         _temperatureLiveData.value = forecast?.currently?.temperature?.roundToInt()?.toString()
     }
 
-    suspend fun setLocation(
-        lat: String,
-        long: String
-    ) {
-        getForecast(lat, long)
+    suspend fun setLocation(location: Location?) {
+        if (location != null) {
+            val lat = location.latitude.toString()
+            val long = location.longitude.toString()
+            getForecast(lat, long)
+        }
     }
 }
