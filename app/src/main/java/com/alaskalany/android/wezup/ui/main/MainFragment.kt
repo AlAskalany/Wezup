@@ -12,6 +12,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.MainThread
+import androidx.annotation.RequiresPermission
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -20,15 +22,19 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alaskalany.android.model.IDailyData
+import com.alaskalany.android.wezup.BuildConfig
 import com.alaskalany.android.wezup.R
 import com.alaskalany.android.wezup.databinding.MainFragmentBinding
 import kotlinx.coroutines.*
+import java.util.*
 import kotlin.coroutines.CoroutineContext
 
-class MainFragment : Fragment(), CoroutineScope, LocationListener {
+class MainFragment : Fragment(), CoroutineScope {
 
-    //</editor-fold>
-
+    private var latitude: Double? = null
+    private var longitude: Double? = null
+    private var gpsLocation: Location? = null
+    private var networkLocation: Location? = null
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + job
     private lateinit var job: Job
@@ -36,8 +42,71 @@ class MainFragment : Fragment(), CoroutineScope, LocationListener {
     private var listener: OnListFragmentInteractionListener? = null
     private lateinit var viewModel: MainViewModel
     private lateinit var binding: MainFragmentBinding
-    private lateinit var locationManager: LocationManager
+    private val locationManager: LocationManager by lazy {
+        activity?.getSystemService(Service.LOCATION_SERVICE) as LocationManager
+    }
     private val dailyDataList: MutableList<IDailyData?> = mutableListOf()
+    private lateinit var timer: Timer
+    private val gpsLocationListener = object : LocationListener {
+        override fun onLocationChanged(location: Location?) {
+            if (::viewModel.isInitialized) {
+                setLatLongFromLocation(location)
+                launch {
+                    updateLocationInViewModel()
+                }
+            }
+        }
+
+        override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {
+            if (BuildConfig.DEBUG) {
+                "statusChanged $p0".shortToast()
+            }
+        }
+
+        override fun onProviderEnabled(p0: String?) {
+            if (BuildConfig.DEBUG) {
+                "providerEnabled $p0".shortToast()
+            }
+        }
+
+        override fun onProviderDisabled(p0: String?) {
+            if (BuildConfig.DEBUG) {
+                "providerDisabled $p0".shortToast()
+            }
+        }
+    }
+    private val networkLocationListener = object : LocationListener {
+        override fun onLocationChanged(location: Location?) {
+            if (::viewModel.isInitialized) {
+                setLatLongFromLocation(location)
+                launch {
+                    updateLocationInViewModel()
+                }
+            }
+        }
+
+        override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {
+            if (BuildConfig.DEBUG) {
+                "statusChanged $p0".shortToast()
+            }
+        }
+
+        override fun onProviderEnabled(p0: String?) {
+            if (BuildConfig.DEBUG) {
+                "providerEnabled $p0".shortToast()
+            }
+        }
+
+        override fun onProviderDisabled(p0: String?) {
+            if (BuildConfig.DEBUG) {
+                "providerDisabled $p0".shortToast()
+            }
+        }
+    }
+    private var gpsLocationEnabled: Boolean = false
+    private var networkLocationEnabled: Boolean = false
+    var taskNum = 0
+    private var lastLocationTimerTask: LastLocationTimerTask? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -97,27 +166,70 @@ class MainFragment : Fragment(), CoroutineScope, LocationListener {
 
         viewModel.daily.observe(this, Observer { newList ->
             newList?.let {
-                dailyDataList.clear()
-                dailyDataList.addAll(it)
+                it.updateDailyList(dailyDataList)
                 binding.recyclerViewMain.adapter?.notifyDataSetChanged()
             }
         })
-
-        locationManager = activity?.getSystemService(Service.LOCATION_SERVICE) as LocationManager
+        gpsLocationEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        networkLocationEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
         ) {
-            locationManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER,
-                1000L,
-                100.0F,
-                this
-            )
+            if (!gpsLocationEnabled && !networkLocationEnabled) {
+                if (BuildConfig.DEBUG) {
+                    Toast.makeText(
+                        requireContext(),
+                        "GPS and Network locations are disabled",
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+            } else {
+
+            }
+
+            if (gpsLocationEnabled) {
+                locationManager.requestLocationUpdates(
+                    LocationManager.GPS_PROVIDER,
+                    1000L,
+                    100.0F,
+                    gpsLocationListener
+                )
+            }
+            if (networkLocationEnabled) {
+                locationManager.requestLocationUpdates(
+                    LocationManager.NETWORK_PROVIDER,
+                    1000L,
+                    100.0F,
+                    networkLocationListener
+                )
+            }
         } else {
             requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
         }
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        timer = Timer()
+        lastLocationTimerTask = LastLocationTimerTask()
+        timer.schedule(lastLocationTimerTask, 1000, 1000)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        timer.cancel()
+        lastLocationTimerTask = null
+    }
+
+    private fun List<IDailyData?>.updateDailyList(
+        list: MutableList<IDailyData?>
+    ) {
+        list.clear()
+        list.addAll(this)
     }
 
     override fun onRequestPermissionsResult(
@@ -133,35 +245,79 @@ class MainFragment : Fragment(), CoroutineScope, LocationListener {
         }
     }
 
-    //<editor-fold desc="LocationListener">
-    override fun onLocationChanged(location: Location?) {
-        if (::viewModel.isInitialized) {
-            location?.latitude?.toString()?.let { viewModel.setLatitude(it) }
-            location?.longitude?.toString()?.let { viewModel.setLongitude(it) }
-            launch {
-                viewModel.setLocation(location)
+    private fun String.shortToast() {
+        Toast.makeText(
+            requireContext(),
+            this,
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    private fun updateLocationData(
+        gpsLocation1: Location?,
+        networkLocation1: Location?
+    ) {
+        if (gpsLocation1 != null && networkLocation1 != null) {
+            if (gpsLocation1.time > networkLocation1.time) {
+                gpsLocation1.let {
+                    latitude = it.latitude
+                    longitude = it.longitude
+                }
+            } else {
+                networkLocation1.let {
+                    latitude = it.latitude
+                    longitude = it.longitude
+                }
             }
+        }
+        setLatLongFromLocation(gpsLocation1)
+        setLatLongFromLocation(networkLocation1)
+        launch {
+            updateLocationInViewModel()
         }
     }
 
-    override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {
-        shortToast("statusChanged $p0")
+    private suspend fun updateLocationInViewModel() {
+        viewModel.setLatLongInViewModel(
+            latitude?.toString(),
+            longitude?.toString()
+        )
+        viewModel.setLocationInViewModel()
     }
 
-    override fun onProviderEnabled(p0: String?) {
-        shortToast("providerEnabled $p0")
+    private fun setLatLongFromLocation(gpsLocation1: Location?) {
+        gpsLocation1?.let {
+            latitude = it.latitude
+            longitude = it.longitude
+        }
     }
 
-    override fun onProviderDisabled(p0: String?) {
-        shortToast("providerDisabled $p0")
+    @MainThread
+    private suspend fun MainViewModel.setLatLongInViewModel(
+        lat: String?,
+        long: String?
+    ) =
+        withContext(Dispatchers.Main) {
+            lat?.let { setLatitude(it) }
+            long?.let { setLongitude(it) }
+        }
+
+    private suspend fun MainViewModel.setLocationInViewModel() {
+        setLocation(
+            latitude.toString(), longitude.toString()
+        )
     }
 
-    private fun shortToast(s: String) {
-        Toast.makeText(
-            requireContext(),
-            s,
-            Toast.LENGTH_SHORT
-        ).show()
+    @RequiresPermission(allOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION])
+    private fun getLastKnownLocation() {
+        if (gpsLocationEnabled) {
+            gpsLocation =
+                locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+        }
+        if (networkLocationEnabled) {
+            networkLocation =
+                locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+        }
     }
 
     /**
@@ -178,6 +334,32 @@ class MainFragment : Fragment(), CoroutineScope, LocationListener {
     interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         fun onListFragmentInteraction(item: IDailyData?)
+    }
+
+    inner class LastLocationTimerTask : TimerTask() {
+        override fun run() {
+            if (BuildConfig.DEBUG) {
+                launch {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(requireContext(), "task ${taskNum++}", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+            }
+            gpsLocation = null
+            networkLocation = null
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                getLastKnownLocation()
+                updateLocationData(gpsLocation, networkLocation)
+            } else {
+                requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
+            }
+        }
+
     }
 
     companion object {
