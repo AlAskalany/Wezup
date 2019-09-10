@@ -1,11 +1,11 @@
 package com.alaskalany.android.wezup.ui.main
 
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.alaskalany.android.model.IDailyData
 import com.alaskalany.android.model.enums.ForecastIcon
@@ -22,7 +22,7 @@ import kotlin.math.roundToInt
  * TODO: Replace the implementation with code for your data type.
  */
 class MyItemRecyclerViewAdapter(
-    private val mValues: MutableList<IDailyData?>,
+    private var mValues: MutableList<IDailyData?>,
     private val mListener: OnListFragmentInteractionListener?
 ) : RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder>() {
 
@@ -64,9 +64,11 @@ class MyItemRecyclerViewAdapter(
     }
 
     override fun getItemCount(): Int = mValues.size
+
     fun swap(list: List<IDailyData?>) {
-        mValues.clear()
-        mValues.addAll(list)
+        val result = DiffUtil.calculateDiff(DailyDiffCallback(mValues, list), false)
+        mValues = list.toMutableList()
+        result.dispatchUpdatesTo(this)
     }
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {

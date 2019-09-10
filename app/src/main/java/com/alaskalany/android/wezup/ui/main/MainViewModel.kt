@@ -4,6 +4,7 @@ import android.location.Location
 import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.alaskalany.android.model.IDailyData
 import com.alaskalany.android.model.IForecast
@@ -18,15 +19,17 @@ class MainViewModel : ViewModel() {
         MutableLiveData<String>()
     }
 
-    val temperature: LiveData<String>
-        get() = _temperatureLiveData
+    val temperature: LiveData<String> = Transformations.map(_temperatureLiveData) {
+        it
+    }
 
     private val _weatherDescriptionLiveData: MutableLiveData<String> by lazy {
         MutableLiveData<String>()
     }
 
-    val weatherDescription: LiveData<String>
-        get() = _weatherDescriptionLiveData
+    val weatherDescription: LiveData<String> = Transformations.map(_weatherDescriptionLiveData) {
+        it
+    }
 
     private val _sunnyLiveData: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>()
@@ -48,20 +51,23 @@ class MainViewModel : ViewModel() {
         MutableLiveData<String>()
     }
 
-    val timeZone: LiveData<String>
-        get() = _timeZoneLiveData
+    val timeZone: LiveData<String> = Transformations.map(_timeZoneLiveData) {
+        it
+    }
 
     private val _dailyLiveData: MutableLiveData<List<IDailyData?>?> by lazy {
         MutableLiveData<List<IDailyData?>?>()
     }
 
-    val daily: LiveData<List<IDailyData?>?>
-        get() = _dailyLiveData
+    val daily: LiveData<List<IDailyData?>?> = Transformations.map(_dailyLiveData) {
+        it
+    }
 
     private var _weatherIcon: MutableLiveData<String> = MutableLiveData()
 
-    val weatherIcon: LiveData<String>
-        get() = _weatherIcon
+    val weatherIcon: LiveData<String> = Transformations.map(_weatherIcon) {
+        it
+    }
 
     init {
         _temperatureLiveData.value = "12"

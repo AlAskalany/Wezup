@@ -79,7 +79,8 @@ class MainFragment : Fragment(), CoroutineScope, LocationListener {
                     recyclerView = binding.recyclerViewMain
                 }
                 if (!::myItemRecyclerViewAdapter.isInitialized) {
-                    myItemRecyclerViewAdapter = MyItemRecyclerViewAdapter(newList.toMutableList(), listener)
+                    myItemRecyclerViewAdapter =
+                        MyItemRecyclerViewAdapter(newList.toMutableList(), listener)
                     // Set the adapter
                     with(recyclerView) {
                         layoutManager = when {
@@ -91,7 +92,6 @@ class MainFragment : Fragment(), CoroutineScope, LocationListener {
                 }
                 if (::myItemRecyclerViewAdapter.isInitialized) {
                     myItemRecyclerViewAdapter.swap(newList)
-                    myItemRecyclerViewAdapter.notifyDataSetChanged()
                 }
             }
         })
