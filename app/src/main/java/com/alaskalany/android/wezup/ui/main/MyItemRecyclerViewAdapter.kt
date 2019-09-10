@@ -64,6 +64,10 @@ class MyItemRecyclerViewAdapter(
     }
 
     override fun getItemCount(): Int = mValues.size
+    fun swap(list: List<IDailyData?>) {
+        mValues.clear()
+        mValues.addAll(list)
+    }
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val mDayTextView: TextView = mView.textView_day

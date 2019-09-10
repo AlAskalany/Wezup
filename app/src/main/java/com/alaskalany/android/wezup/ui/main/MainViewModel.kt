@@ -14,30 +14,46 @@ class MainViewModel : ViewModel() {
 
     private val weatherRepository: WeatherRepository = WeatherRepository()
 
-    private val _temperatureLiveData: MutableLiveData<String> = MutableLiveData()
+    private val _temperatureLiveData: MutableLiveData<String> by lazy {
+        MutableLiveData<String>()
+    }
 
     val temperature: LiveData<String>
         get() = _temperatureLiveData
 
-    private val _weatherDescriptionLiveData: MutableLiveData<String> = MutableLiveData()
+    private val _weatherDescriptionLiveData: MutableLiveData<String> by lazy {
+        MutableLiveData<String>()
+    }
 
     val weatherDescription: LiveData<String>
         get() = _weatherDescriptionLiveData
 
-    private val _sunnyLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    private val _sunnyLiveData: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>()
+    }
 
-    private val _cloudyLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    private val _cloudyLiveData: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>()
+    }
 
-    private val _latitude: MutableLiveData<String> = MutableLiveData()
+    private val _latitude: MutableLiveData<String> by lazy {
+        MutableLiveData<String>()
+    }
 
-    private val _longitude: MutableLiveData<String> = MutableLiveData()
+    private val _longitude: MutableLiveData<String> by lazy {
+        MutableLiveData<String>()
+    }
 
-    private val _timeZoneLiveData: MutableLiveData<String> = MutableLiveData()
+    private val _timeZoneLiveData: MutableLiveData<String> by lazy {
+        MutableLiveData<String>()
+    }
 
     val timeZone: LiveData<String>
         get() = _timeZoneLiveData
 
-    private val _dailyLiveData: MutableLiveData<List<IDailyData?>?> = MutableLiveData()
+    private val _dailyLiveData: MutableLiveData<List<IDailyData?>?> by lazy {
+        MutableLiveData<List<IDailyData?>?>()
+    }
 
     val daily: LiveData<List<IDailyData?>?>
         get() = _dailyLiveData
@@ -57,16 +73,6 @@ class MainViewModel : ViewModel() {
         _timeZoneLiveData.value = "-"
     }
 
-    @MainThread
-    fun setLatitude(text: String) {
-        _latitude.value = text
-    }
-
-    @MainThread
-    fun setLongitude(text: String) {
-        _longitude.value = text
-    }
-
     private suspend fun getForecast(latitude: String, longitude: String) {
         val forecast = weatherRepository.fetchForecast(
             "dafc50f09edd941ce1876d78a0a31b77",
@@ -80,10 +86,12 @@ class MainViewModel : ViewModel() {
         updateDaily(forecast)
     }
 
+    @MainThread
     private fun updateDaily(forecast: IForecast?) {
         _dailyLiveData.value = forecast?.daily?.data
     }
 
+    @MainThread
     private fun updateCurrently(forecast: IForecast?) {
         val currently = forecast?.currently
         _weatherIcon.value = currently?.icon

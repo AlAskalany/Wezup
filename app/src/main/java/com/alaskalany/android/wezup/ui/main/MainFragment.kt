@@ -19,6 +19,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.alaskalany.android.model.IDailyData
 import com.alaskalany.android.wezup.R
 import com.alaskalany.android.wezup.databinding.MainFragmentBinding
@@ -31,13 +32,23 @@ class MainFragment : Fragment(), CoroutineScope, LocationListener {
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + job
+
     private lateinit var job: Job
+
     private var columnCount = 1
+
     private var listener: OnListFragmentInteractionListener? = null
+
     private lateinit var viewModel: MainViewModel
+
     private lateinit var binding: MainFragmentBinding
+
     private lateinit var locationManager: LocationManager
-    private val dailyDataList: MutableList<IDailyData?> = mutableListOf()
+
+    private lateinit var recyclerView: RecyclerView
+
+    private lateinit var myItemRecyclerViewAdapter: MyItemRecyclerViewAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -51,17 +62,55 @@ class MainFragment : Fragment(), CoroutineScope, LocationListener {
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.main_fragment, container, false)
         binding.lifecycleOwner = this
-        val view = binding.root
-        val recyclerView = binding.recyclerViewMain
-        // Set the adapter
-        with(recyclerView) {
-            layoutManager = when {
-                columnCount <= 1 -> LinearLayoutManager(context)
-                else -> GridLayoutManager(context, columnCount)
+        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        binding.model = viewModel
+        viewModel.weatherIcon.observe(this, Observer { icon ->
+            icon?.let {
+                binding.imageViewCurrentWeatherIcon.setImageDrawable(
+                    resources.getDrawable(
+                        getWeatherIconDrawable(it)
+                    )
+                )
             }
-            adapter = MyItemRecyclerViewAdapter(dailyDataList, listener)
+        })
+        viewModel.daily.observe(this, Observer { newList ->
+            newList?.let {
+                if (!::recyclerView.isInitialized) {
+                    recyclerView = binding.recyclerViewMain
+                }
+                if (!::myItemRecyclerViewAdapter.isInitialized) {
+                    myItemRecyclerViewAdapter = MyItemRecyclerViewAdapter(newList.toMutableList(), listener)
+                    // Set the adapter
+                    with(recyclerView) {
+                        layoutManager = when {
+                            columnCount <= 1 -> LinearLayoutManager(context)
+                            else -> GridLayoutManager(context, columnCount)
+                        }
+                        adapter = myItemRecyclerViewAdapter
+                    }
+                }
+                if (::myItemRecyclerViewAdapter.isInitialized) {
+                    myItemRecyclerViewAdapter.swap(newList)
+                    myItemRecyclerViewAdapter.notifyDataSetChanged()
+                }
+            }
+        })
+        locationManager = activity?.getSystemService(Service.LOCATION_SERVICE) as LocationManager
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            locationManager.requestLocationUpdates(
+                LocationManager.GPS_PROVIDER,
+                1000L,
+                100.0F,
+                this
+            )
+        } else {
+            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
         }
-        return view
+        return binding.root
     }
 
     override fun onAttach(context: Context) {
@@ -80,46 +129,6 @@ class MainFragment : Fragment(), CoroutineScope, LocationListener {
         job.cancel()
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-        binding.model = viewModel
-
-        viewModel.weatherIcon.observe(this, Observer { icon ->
-            icon?.let {
-                binding.imageViewCurrentWeatherIcon.setImageDrawable(
-                    resources.getDrawable(
-                        getWeatherIconDrawable(it)
-                    )
-                )
-            }
-        })
-
-        viewModel.daily.observe(this, Observer { newList ->
-            newList?.let {
-                dailyDataList.clear()
-                dailyDataList.addAll(it)
-                binding.recyclerViewMain.adapter?.notifyDataSetChanged()
-            }
-        })
-
-        locationManager = activity?.getSystemService(Service.LOCATION_SERVICE) as LocationManager
-        if (ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            locationManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER,
-                1000L,
-                100.0F,
-                this
-            )
-        } else {
-            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
-        }
-    }
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -136,8 +145,6 @@ class MainFragment : Fragment(), CoroutineScope, LocationListener {
     //<editor-fold desc="LocationListener">
     override fun onLocationChanged(location: Location?) {
         if (::viewModel.isInitialized) {
-            location?.latitude?.toString()?.let { viewModel.setLatitude(it) }
-            location?.longitude?.toString()?.let { viewModel.setLongitude(it) }
             launch {
                 viewModel.setLocation(location)
             }
@@ -176,6 +183,7 @@ class MainFragment : Fragment(), CoroutineScope, LocationListener {
      * for more information.
      */
     interface OnListFragmentInteractionListener {
+
         // TODO: Update argument type and name
         fun onListFragmentInteraction(item: IDailyData?)
     }
