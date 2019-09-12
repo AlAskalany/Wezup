@@ -5,7 +5,8 @@ import com.alaskalany.android.model.enums.ForecastIcon
 import com.alaskalany.android.model.enums.ForecastUnits
 import com.alaskalany.android.shared.dto.*
 
-object DewPointMapper : NonNullDataMapper<Double, DewPoint> {
+object DewPointMapper :
+    NonNullDataMapper<Double, DewPoint> {
 
     override val defaultIfNullValue: DewPoint
         get() = DewPoint()
@@ -24,7 +25,8 @@ interface DataMapper<in I, out O : Data<*>> {
     fun map(input: I?): O?
 }
 
-object ForecastMapper : DataMapper<ForecastDto, Forecast> {
+object ForecastMapper :
+    DataMapper<ForecastDto, Forecast> {
 
     override fun map(input: ForecastDto?): Forecast? {
         return if (input != null) {
@@ -44,7 +46,8 @@ object ForecastMapper : DataMapper<ForecastDto, Forecast> {
     }
 }
 
-object HumidityMapper : NonNullDataMapper<Double, Humidity> {
+object HumidityMapper :
+    NonNullDataMapper<Double, Humidity> {
 
     override val defaultIfNullValue: Humidity
         get() = Humidity()
@@ -58,7 +61,8 @@ object HumidityMapper : NonNullDataMapper<Double, Humidity> {
     }
 }
 
-object WindGustMapper : NonNullDataMapper<Double, WindGust> {
+object WindGustMapper :
+    NonNullDataMapper<Double, WindGust> {
 
     override val defaultIfNullValue: WindGust
         get() = WindGust()
@@ -72,13 +76,15 @@ object WindGustMapper : NonNullDataMapper<Double, WindGust> {
     }
 }
 
-object MoonPhaseMapper : DataMapper<Double, MoonPhase> {
+object MoonPhaseMapper :
+    DataMapper<Double, MoonPhase> {
     override fun map(input: Double?): MoonPhase {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
 
-object PrecipProbabilityMapper : NonNullDataMapper<Double, PrecipProbability> {
+object PrecipProbabilityMapper :
+    NonNullDataMapper<Double, PrecipProbability> {
 
     override val defaultIfNullValue: PrecipProbability
         get() = PrecipProbability()
@@ -92,12 +98,14 @@ object PrecipProbabilityMapper : NonNullDataMapper<Double, PrecipProbability> {
     }
 }
 
-object DailyListMapper : DataMapper<DataBlock, Daily> {
+object DailyListMapper :
+    DataMapper<DataBlock, Daily> {
 
 
     override fun map(input: DataBlock?): Daily? {
         return if (input != null) {
-            Daily(summary = SummaryMapper.map(input.summary),
+            Daily(
+                summary = SummaryMapper.map(input.summary),
                 icon = ForecastIconMapper.map(input.icon),
                 data = input.data?.map { dataPoint ->
                     dataPoint?.let {
@@ -105,14 +113,16 @@ object DailyListMapper : DataMapper<DataBlock, Daily> {
                             it
                         )
                     }
-                })
+                }
+            )
         } else {
             null
         }
     }
 }
 
-object VisibilityMapper : NonNullDataMapper<Double, Visibility> {
+object VisibilityMapper :
+    NonNullDataMapper<Double, Visibility> {
 
     override val defaultIfNullValue: Visibility
         get() = Visibility()
@@ -126,7 +136,8 @@ object VisibilityMapper : NonNullDataMapper<Double, Visibility> {
     }
 }
 
-object TitleMapper : NonNullDataMapper<String, Title> {
+object TitleMapper :
+    NonNullDataMapper<String, Title> {
 
     override val defaultIfNullValue: Title
         get() = Title()
@@ -140,7 +151,8 @@ object TitleMapper : NonNullDataMapper<String, Title> {
     }
 }
 
-object PrecipTypeMapper : NonNullDataMapper<String, PrecipType> {
+object PrecipTypeMapper :
+    NonNullDataMapper<String, PrecipType> {
     override val defaultIfNullValue: PrecipType
         get() = PrecipType()
 
@@ -153,7 +165,8 @@ object PrecipTypeMapper : NonNullDataMapper<String, PrecipType> {
     }
 }
 
-object FlagsMapper : DataMapper<FlagsDto, Flags> {
+object FlagsMapper :
+    DataMapper<FlagsDto, Flags> {
 
     override fun map(input: FlagsDto?): Flags? {
         return if (input != null) {
@@ -169,7 +182,8 @@ object FlagsMapper : DataMapper<FlagsDto, Flags> {
     }
 }
 
-object ForecastUnitsMapper : DataMapper<String, ForecastUnitsType> {
+object ForecastUnitsMapper :
+    DataMapper<String, ForecastUnitsType> {
     override fun map(input: String?): ForecastUnitsType {
         return ForecastUnitsType(
             when (input) {
@@ -183,7 +197,8 @@ object ForecastUnitsMapper : DataMapper<String, ForecastUnitsType> {
     }
 }
 
-object WindBearingMapper : NonNullDataMapper<Double, WindBearing> {
+object WindBearingMapper :
+    NonNullDataMapper<Double, WindBearing> {
 
     override val defaultIfNullValue: WindBearing
         get() = WindBearing()
@@ -197,7 +212,8 @@ object WindBearingMapper : NonNullDataMapper<Double, WindBearing> {
     }
 }
 
-object OzoneMapper : NonNullDataMapper<Double, Ozone> {
+object OzoneMapper :
+    NonNullDataMapper<Double, Ozone> {
 
     override val defaultIfNullValue: Ozone
         get() = Ozone()
@@ -211,7 +227,8 @@ object OzoneMapper : NonNullDataMapper<Double, Ozone> {
     }
 }
 
-object DescriptionMapper : DataMapper<String, Description> {
+object DescriptionMapper :
+    DataMapper<String, Description> {
     override fun map(input: String?): Description {
         return if (input != null) {
             Description(input)
@@ -221,7 +238,8 @@ object DescriptionMapper : DataMapper<String, Description> {
     }
 }
 
-object WindSpeedMapper : NonNullDataMapper<Double, WindSpeed> {
+object WindSpeedMapper :
+    NonNullDataMapper<Double, WindSpeed> {
 
     override val defaultIfNullValue: WindSpeed
         get() = WindSpeed()
@@ -235,7 +253,8 @@ object WindSpeedMapper : NonNullDataMapper<Double, WindSpeed> {
     }
 }
 
-object UvIndexMapper : NonNullDataMapper<Double, UvIndex> {
+object UvIndexMapper :
+    NonNullDataMapper<Double, UvIndex> {
 
     override val defaultIfNullValue: UvIndex
         get() = UvIndex()
@@ -249,7 +268,8 @@ object UvIndexMapper : NonNullDataMapper<Double, UvIndex> {
     }
 }
 
-object TimeMapper : NonNullDataMapper<Double, Time> {
+object TimeMapper :
+    NonNullDataMapper<Double, Time> {
     override val defaultIfNullValue: Time
         get() = Time()
 
@@ -262,7 +282,8 @@ object TimeMapper : NonNullDataMapper<Double, Time> {
     }
 }
 
-object DailyMapper : DataMapper<DataPoint, DailyData> {
+object DailyMapper :
+    DataMapper<DataPoint, DailyData> {
 
     override fun map(input: DataPoint?): DailyData? {
         return if (input != null) {
@@ -343,7 +364,8 @@ object DailyMapper : DataMapper<DataPoint, DailyData> {
     }
 }
 
-object SummaryMapper : NonNullDataMapper<String, Summary> {
+object SummaryMapper :
+    NonNullDataMapper<String, Summary> {
 
     override val defaultIfNullValue: Summary
         get() = Summary()
@@ -357,7 +379,8 @@ object SummaryMapper : NonNullDataMapper<String, Summary> {
     }
 }
 
-object AltersListMapper : DataMapper<List<AlertDto?>, Alerts> {
+object AltersListMapper :
+    DataMapper<List<AlertDto?>, Alerts> {
 
     override fun map(input: List<AlertDto?>?): Alerts {
         return input?.filterNotNull()?.map { AlertMapper.map(it) }?.let {
@@ -368,7 +391,8 @@ object AltersListMapper : DataMapper<List<AlertDto?>, Alerts> {
     }
 }
 
-object PressureMapper : NonNullDataMapper<Double, Pressure> {
+object PressureMapper :
+    NonNullDataMapper<Double, Pressure> {
 
     override val defaultIfNullValue: Pressure
         get() = Pressure()
@@ -382,7 +406,8 @@ object PressureMapper : NonNullDataMapper<Double, Pressure> {
     }
 }
 
-object PrecipIntensityMapper : NonNullDataMapper<Double, PrecipIntensity> {
+object PrecipIntensityMapper :
+    NonNullDataMapper<Double, PrecipIntensity> {
 
     override val defaultIfNullValue: PrecipIntensity
         get() = PrecipIntensity()
@@ -396,7 +421,8 @@ object PrecipIntensityMapper : NonNullDataMapper<Double, PrecipIntensity> {
     }
 }
 
-object TemperatureMapper : NonNullDataMapper<Double, Temperature> {
+object TemperatureMapper :
+    NonNullDataMapper<Double, Temperature> {
 
     override val defaultIfNullValue: Temperature
         get() = Temperature()
@@ -410,7 +436,8 @@ object TemperatureMapper : NonNullDataMapper<Double, Temperature> {
     }
 }
 
-object HourlyMapper : DataMapper<DataPoint, HourlyData> {
+object HourlyMapper :
+    DataMapper<DataPoint, HourlyData> {
 
     override fun map(input: DataPoint?): HourlyData? {
         return if (input != null) {
@@ -442,7 +469,8 @@ object HourlyMapper : DataMapper<DataPoint, HourlyData> {
     }
 }
 
-object NearestStormDistanceMapper : NonNullDataMapper<Double, NearestStormDistance> {
+object NearestStormDistanceMapper :
+    NonNullDataMapper<Double, NearestStormDistance> {
 
     override val defaultIfNullValue: NearestStormDistance
         get() = NearestStormDistance()
@@ -456,7 +484,8 @@ object NearestStormDistanceMapper : NonNullDataMapper<Double, NearestStormDistan
     }
 }
 
-object CurrentlyMapper : DataMapper<DataPoint, Currently> {
+object CurrentlyMapper :
+    DataMapper<DataPoint, Currently> {
 
     override fun map(input: DataPoint?): Currently? {
         return if (input != null) {
@@ -494,7 +523,8 @@ object CurrentlyMapper : DataMapper<DataPoint, Currently> {
     }
 }
 
-object CloudCoverMapper : NonNullDataMapper<Double, CloudCover> {
+object CloudCoverMapper :
+    NonNullDataMapper<Double, CloudCover> {
 
     override val defaultIfNullValue: CloudCover
         get() = CloudCover()
@@ -508,7 +538,8 @@ object CloudCoverMapper : NonNullDataMapper<Double, CloudCover> {
     }
 }
 
-object AlertMapper : DataMapper<AlertDto, Alert> {
+object AlertMapper :
+    DataMapper<AlertDto, Alert> {
 
     override fun map(input: AlertDto?): Alert? {
         return if (input != null) {
@@ -527,7 +558,8 @@ object AlertMapper : DataMapper<AlertDto, Alert> {
     }
 }
 
-object ForecastIconMapper : DataMapper<String, ForecastIconType> {
+object ForecastIconMapper :
+    DataMapper<String, ForecastIconType> {
     override fun map(input: String?): ForecastIconType {
         return ForecastIconType(
             when (input) {
@@ -547,11 +579,13 @@ object ForecastIconMapper : DataMapper<String, ForecastIconType> {
     }
 }
 
-object HourlyListMapper : DataMapper<DataBlock, Hourly> {
+object HourlyListMapper :
+    DataMapper<DataBlock, Hourly> {
 
     override fun map(input: DataBlock?): Hourly? {
         return if (input != null) {
-            Hourly(summary = SummaryMapper.map(input.summary),
+            Hourly(
+                summary = SummaryMapper.map(input.summary),
                 icon = ForecastIconMapper.map(input.icon),
                 data = input.data?.map { dataPoint ->
                     dataPoint?.let {
@@ -559,7 +593,8 @@ object HourlyListMapper : DataMapper<DataBlock, Hourly> {
                             it
                         )
                     }
-                })
+                }
+            )
         } else {
             null
         }
