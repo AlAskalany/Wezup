@@ -1,11 +1,11 @@
 package com.alaskalany.android.wezup.ui.main
 
 import androidx.recyclerview.widget.DiffUtil
-import com.alaskalany.android.model.IDailyData
+import com.alaskalany.android.model.DailyData
 
 class DailyDiffCallback(
-    private var oldList: List<IDailyData?>? = null,
-    private var newList: List<IDailyData?>? = null
+    private var oldList: List<DailyData?>? = null,
+    private var newList: List<DailyData?>? = null
 ) : DiffUtil.Callback() {
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =

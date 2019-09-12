@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.alaskalany.android.model.DailyData
 import com.alaskalany.android.model.IDailyData
 import com.alaskalany.android.wezup.databinding.MainActivityBinding
 import com.alaskalany.android.wezup.ui.main.MainFragment
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity(), MainFragment.OnListFragmentInteraction
         }
     }
 
-    override fun onListFragmentInteraction(item: IDailyData?) {
+    override fun onListFragmentInteraction(item: DailyData?) {
         Toast.makeText(this, "Item Clicked", Toast.LENGTH_SHORT).show()
     }
 }

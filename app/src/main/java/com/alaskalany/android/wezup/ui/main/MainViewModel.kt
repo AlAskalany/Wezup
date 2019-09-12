@@ -6,8 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.alaskalany.android.model.IDailyData
-import com.alaskalany.android.model.IForecast
+import com.alaskalany.android.model.DailyData
+import com.alaskalany.android.model.Forecast
 import com.alaskalany.android.shared.WeatherRepository
 import kotlin.math.roundToInt
 
@@ -55,11 +55,11 @@ class MainViewModel : ViewModel() {
         it
     }
 
-    private val _dailyLiveData: MutableLiveData<List<IDailyData?>?> by lazy {
-        MutableLiveData<List<IDailyData?>?>()
+    private val _dailyLiveData: MutableLiveData<List<DailyData?>?> by lazy {
+        MutableLiveData<List<DailyData?>?>()
     }
 
-    val daily: LiveData<List<IDailyData?>?> = Transformations.map(_dailyLiveData) {
+    val daily: LiveData<List<DailyData?>?> = Transformations.map(_dailyLiveData) {
         it
     }
 
@@ -93,12 +93,12 @@ class MainViewModel : ViewModel() {
     }
 
     @MainThread
-    private fun updateDaily(forecast: IForecast?) {
+    private fun updateDaily(forecast: Forecast?) {
         _dailyLiveData.value = forecast?.daily?.data
     }
 
     @MainThread
-    private fun updateCurrently(forecast: IForecast?) {
+    private fun updateCurrently(forecast: Forecast?) {
         val currently = forecast?.currently
         _weatherIcon.value = currently?.icon
         _weatherDescriptionLiveData.value = currently?.summary

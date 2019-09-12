@@ -7,9 +7,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.alaskalany.android.model.IDailyData
+import com.alaskalany.android.model.DailyData
 import com.alaskalany.android.model.enums.ForecastIcon
-import com.alaskalany.android.model.getDayName
 import com.alaskalany.android.wezup.R
 import com.alaskalany.android.wezup.ui.main.MainFragment.OnListFragmentInteractionListener
 import com.alaskalany.android.wezup.ui.main.dummy.DummyContent.DummyItem
@@ -22,7 +21,7 @@ import kotlin.math.roundToInt
  * TODO: Replace the implementation with code for your data type.
  */
 class MyItemRecyclerViewAdapter(
-    private var mValues: MutableList<IDailyData?>,
+    private var mValues: MutableList<DailyData?>,
     private val mListener: OnListFragmentInteractionListener?
 ) : RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder>() {
 
@@ -30,7 +29,7 @@ class MyItemRecyclerViewAdapter(
 
     init {
         mOnClickListener = View.OnClickListener { v ->
-            val item = v.tag as IDailyData
+            val item = v.tag as DailyData
             // Notify the active callbacks interface (the activity, if the fragment is attached to
             // one) that an item has been selected.
             mListener?.onListFragmentInteraction(item)
@@ -45,7 +44,7 @@ class MyItemRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
-        holder.mDayTextView.text = item?.time?.toLong()?.getDayName()
+        holder.mDayTextView.text = item?.getDayName()
         holder.mWeatherSummaryTextView.text = item?.summary
         holder.mTempMaxTextView.text = item?.temperatureHigh?.roundToInt().toString()
         holder.mTempMinTextView.text = item?.temperatureLow?.roundToInt().toString()
@@ -65,7 +64,7 @@ class MyItemRecyclerViewAdapter(
 
     override fun getItemCount(): Int = mValues.size
 
-    fun swap(list: List<IDailyData?>) {
+    fun swap(list: List<DailyData?>) {
         val result = DiffUtil.calculateDiff(DailyDiffCallback(mValues, list), false)
         mValues = list.toMutableList()
         result.dispatchUpdatesTo(this)

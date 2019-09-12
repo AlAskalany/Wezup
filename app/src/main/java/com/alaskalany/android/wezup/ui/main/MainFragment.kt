@@ -20,7 +20,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.alaskalany.android.model.IDailyData
+import com.alaskalany.android.model.DailyData
 import com.alaskalany.android.wezup.R
 import com.alaskalany.android.wezup.databinding.MainFragmentBinding
 import kotlinx.coroutines.*
@@ -185,7 +185,7 @@ class MainFragment : Fragment(), CoroutineScope, LocationListener {
     interface OnListFragmentInteractionListener {
 
         // TODO: Update argument type and name
-        fun onListFragmentInteraction(item: IDailyData?)
+        fun onListFragmentInteraction(item: DailyData?)
     }
 
     companion object {

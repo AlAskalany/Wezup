@@ -2,6 +2,7 @@ package com.alaskalany.android.model
 
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.roundToLong
 
 data class DailyData(
     override val time: Double? = 0.0,
@@ -43,12 +44,13 @@ data class DailyData(
     override val apparentTemperatureMinTime: Double? = 0.0,
     override val apparentTemperatureMax: Double? = 0.0,
     override val apparentTemperatureMaxTime: Double? = 0.0
-) : IDailyData
+) : IDailyData {
 
-fun Long.getDayName(): String? {
-    val asd = Date().apply {
-        time = this@getDayName * 1000
+    fun getDayName(): String? {
+        val asd = Date().also {
+            it.time = time?.roundToLong()?.times(1000) ?: 0
+        }
+        val outFormat = SimpleDateFormat("EEEE")
+        return outFormat.format(asd)
     }
-    val outFormat = SimpleDateFormat("EEEE")
-    return outFormat.format(asd)
 }
