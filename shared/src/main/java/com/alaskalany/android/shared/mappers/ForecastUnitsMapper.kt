@@ -2,6 +2,7 @@ package com.alaskalany.android.shared.mappers
 
 import com.alaskalany.android.model.data.ForecastUnitsType
 import com.alaskalany.android.model.enums.ForecastUnits
+import com.alaskalany.android.shared.DataMapper
 
 object ForecastUnitsMapper : DataMapper<String, ForecastUnitsType> {
     override fun map(input: String?): ForecastUnitsType {

@@ -1,6 +1,7 @@
 package com.alaskalany.android.shared.mappers
 
 import com.alaskalany.android.model.data.Temperature
+import com.alaskalany.android.shared.NonNullDataMapper
 
 object TemperatureMapper : NonNullDataMapper<Double, Temperature> {
 

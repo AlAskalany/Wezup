@@ -1,6 +1,7 @@
 package com.alaskalany.android.shared.mappers
 
 import com.alaskalany.android.model.data.Pressure
+import com.alaskalany.android.shared.NonNullDataMapper
 
 object PressureMapper :
     NonNullDataMapper<Double, Pressure> {

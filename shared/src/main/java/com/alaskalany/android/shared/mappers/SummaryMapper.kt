@@ -1,6 +1,7 @@
 package com.alaskalany.android.shared.mappers
 
 import com.alaskalany.android.model.data.Summary
+import com.alaskalany.android.shared.NonNullDataMapper
 
 object SummaryMapper : NonNullDataMapper<String, Summary> {
 

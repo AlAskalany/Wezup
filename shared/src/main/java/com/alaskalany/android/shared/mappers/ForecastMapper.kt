@@ -1,6 +1,7 @@
 package com.alaskalany.android.shared.mappers
 
 import com.alaskalany.android.model.data.Forecast
+import com.alaskalany.android.shared.DataMapper
 import com.alaskalany.android.shared.dto.ForecastDto
 
 object ForecastMapper :

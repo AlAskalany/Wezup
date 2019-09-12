@@ -1,6 +1,7 @@
 package com.alaskalany.android.shared.mappers
 
 import com.alaskalany.android.model.data.PrecipProbability
+import com.alaskalany.android.shared.NonNullDataMapper
 
 object PrecipProbabilityMapper :
     NonNullDataMapper<Double, PrecipProbability> {

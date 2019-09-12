@@ -1,6 +1,7 @@
 package com.alaskalany.android.shared.mappers
 
 import com.alaskalany.android.model.data.Flags
+import com.alaskalany.android.shared.DataMapper
 import com.alaskalany.android.shared.dto.FlagsDto
 
 object FlagsMapper :

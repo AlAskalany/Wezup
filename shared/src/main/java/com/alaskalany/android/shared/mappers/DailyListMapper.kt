@@ -1,6 +1,7 @@
 package com.alaskalany.android.shared.mappers
 
 import com.alaskalany.android.model.data.Daily
+import com.alaskalany.android.shared.DataMapper
 import com.alaskalany.android.shared.dto.DataBlock
 
 object DailyListMapper :

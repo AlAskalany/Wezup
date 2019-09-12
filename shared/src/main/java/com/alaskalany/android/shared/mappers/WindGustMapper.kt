@@ -1,6 +1,7 @@
 package com.alaskalany.android.shared.mappers
 
 import com.alaskalany.android.model.data.WindGust
+import com.alaskalany.android.shared.NonNullDataMapper
 
 object WindGustMapper :
     NonNullDataMapper<Double, WindGust> {

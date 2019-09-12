@@ -1,4 +1,4 @@
-package com.alaskalany.android.shared.mappers
+package com.alaskalany.android.shared
 
 import com.alaskalany.android.model.data.Data
 
