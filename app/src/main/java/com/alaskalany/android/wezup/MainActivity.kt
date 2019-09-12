@@ -4,11 +4,9 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.alaskalany.android.model.DailyData
-import com.alaskalany.android.model.IDailyData
+import com.alaskalany.android.model.data.DailyData
 import com.alaskalany.android.wezup.databinding.MainActivityBinding
 import com.alaskalany.android.wezup.ui.main.MainFragment
-import com.alaskalany.android.wezup.ui.main.dummy.DummyContent
 
 class MainActivity : AppCompatActivity(), MainFragment.OnListFragmentInteractionListener {
 

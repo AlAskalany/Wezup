@@ -6,10 +6,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.alaskalany.android.model.DailyData
-import com.alaskalany.android.model.Forecast
+import com.alaskalany.android.model.data.DailyData
+import com.alaskalany.android.model.data.Forecast
+import com.alaskalany.android.model.enums.ForecastIcon
 import com.alaskalany.android.shared.WeatherRepository
-import kotlin.math.roundToInt
 
 class MainViewModel : ViewModel() {
 
@@ -63,9 +63,9 @@ class MainViewModel : ViewModel() {
         it
     }
 
-    private var _weatherIcon: MutableLiveData<String> = MutableLiveData()
+    private var _weatherIcon: MutableLiveData<ForecastIcon> = MutableLiveData()
 
-    val weatherIcon: LiveData<String> = Transformations.map(_weatherIcon) {
+    val weatherIcon: LiveData<ForecastIcon> = Transformations.map(_weatherIcon) {
         it
     }
 
@@ -100,10 +100,10 @@ class MainViewModel : ViewModel() {
     @MainThread
     private fun updateCurrently(forecast: Forecast?) {
         val currently = forecast?.currently
-        _weatherIcon.value = currently?.icon
-        _weatherDescriptionLiveData.value = currently?.summary
+        _weatherIcon.value = currently?.icon?.type
+        _weatherDescriptionLiveData.value = currently?.summary?.text
         _timeZoneLiveData.value = forecast?.timezone?.replace("_", " ")
-        _temperatureLiveData.value = forecast?.currently?.temperature?.roundToInt()?.toString()
+        _temperatureLiveData.value = forecast?.currently?.temperature?.text
     }
 
     suspend fun setLocation(location: Location?) {

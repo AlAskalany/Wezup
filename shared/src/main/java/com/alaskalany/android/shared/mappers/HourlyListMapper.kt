@@ -1,19 +1,17 @@
 package com.alaskalany.android.shared.mappers
 
-import com.alaskalany.android.model.Hourly
+import com.alaskalany.android.model.data.Hourly
 import com.alaskalany.android.shared.dto.DataBlock
 
-class HourlyListMapper :
+object HourlyListMapper :
     DataMapper<DataBlock, Hourly> {
-
-    private val hourlyMapper = HourlyMapper()
 
     override fun map(input: DataBlock?): Hourly? {
         return if (input != null) {
             Hourly(
-                input.summary,
-                input.icon,
-                input.data?.map { dataPoint -> dataPoint?.let { hourlyMapper.map(it) } }
+                summary = SummaryMapper.map(input.summary),
+                icon = ForecastIconMapper.map(input.icon),
+                data = input.data?.map { dataPoint -> dataPoint?.let { HourlyMapper.map(it) } }
             )
         } else {
             null

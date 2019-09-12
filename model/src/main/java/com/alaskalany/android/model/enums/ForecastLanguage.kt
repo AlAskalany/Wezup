@@ -2,6 +2,7 @@ package com.alaskalany.android.model.enums
 
 @Suppress("unused")
 enum class ForecastLanguage(val value: String) {
+
     ARABIC("ar"),
     AZERBAIJANI("az"),
     BELARUSIAN("be"),

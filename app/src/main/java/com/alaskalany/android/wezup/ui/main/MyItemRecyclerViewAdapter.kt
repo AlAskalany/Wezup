@@ -7,13 +7,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.alaskalany.android.model.DailyData
+import com.alaskalany.android.model.data.DailyData
 import com.alaskalany.android.model.enums.ForecastIcon
 import com.alaskalany.android.wezup.R
 import com.alaskalany.android.wezup.ui.main.MainFragment.OnListFragmentInteractionListener
 import com.alaskalany.android.wezup.ui.main.dummy.DummyContent.DummyItem
 import kotlinx.android.synthetic.main.fragment_item.view.*
-import kotlin.math.roundToInt
 
 /**
  * [RecyclerView.Adapter] that can display a [DummyItem] and makes a call to the
@@ -44,10 +43,10 @@ class MyItemRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
-        holder.mDayTextView.text = item?.getDayName()
-        holder.mWeatherSummaryTextView.text = item?.summary
-        holder.mTempMaxTextView.text = item?.temperatureHigh?.roundToInt().toString()
-        holder.mTempMinTextView.text = item?.temperatureLow?.roundToInt().toString()
+        holder.mDayTextView.text = item?.dayName
+        holder.mWeatherSummaryTextView.text = item?.summary?.text
+        holder.mTempMaxTextView.text = item?.temperatureHigh?.text
+        holder.mTempMinTextView.text = item?.temperatureLow?.text
 
         with(holder.mView) {
             tag = item
@@ -57,7 +56,7 @@ class MyItemRecyclerViewAdapter(
         val icon = item?.icon
         holder.mImageViewIcon.setImageDrawable(
             holder.mView.context?.resources?.getDrawable(
-                getWeatherIconDrawable(icon)
+                getWeatherIconDrawable(icon?.type)
             )
         )
     }
@@ -83,39 +82,39 @@ class MyItemRecyclerViewAdapter(
     }
 }
 
-fun getWeatherIconDrawable(icon: String?): Int {
+fun getWeatherIconDrawable(icon: ForecastIcon?): Int {
     return when (icon) {
-        ForecastIcon.CLEAR_DAY.value -> {
+        ForecastIcon.CLEAR_DAY -> {
             R.drawable.ic_clear_day
         }
-        ForecastIcon.CLEAR_NIGHT.value -> {
+        ForecastIcon.CLEAR_NIGHT -> {
             R.drawable.ic_clear_night
         }
-        ForecastIcon.PARTLY_CLOUDY_DAY.value -> {
+        ForecastIcon.PARTLY_CLOUDY_DAY -> {
             R.drawable.ic_partly_cloudy_day
         }
-        ForecastIcon.PARTLY_CLOUD_NIGHT.value -> {
+        ForecastIcon.PARTLY_CLOUD_NIGHT -> {
             R.drawable.ic_partly_cloud_night
         }
-        ForecastIcon.CLOUDY.value -> {
+        ForecastIcon.CLOUDY -> {
             R.drawable.ic_cloudy
         }
-        ForecastIcon.RAIN.value -> {
+        ForecastIcon.RAIN -> {
             R.drawable.ic_rain
         }
-        ForecastIcon.SLEET.value -> {
+        ForecastIcon.SLEET -> {
             R.drawable.ic_sleet
         }
-        ForecastIcon.SNOW.value -> {
+        ForecastIcon.SNOW -> {
             R.drawable.ic_snow
         }
-        ForecastIcon.WIND.value -> {
+        ForecastIcon.WIND -> {
             R.drawable.ic_wind
         }
-        ForecastIcon.FOG.value -> {
+        ForecastIcon.FOG -> {
             R.drawable.ic_fog
         }
-        ForecastIcon.UNKOWN.value -> {
+        ForecastIcon.UNKOWN -> {
             R.drawable.ic_clear_day
         }
         else -> {

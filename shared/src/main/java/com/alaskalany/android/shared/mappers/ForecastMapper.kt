@@ -1,28 +1,22 @@
 package com.alaskalany.android.shared.mappers
 
-import com.alaskalany.android.model.Forecast
+import com.alaskalany.android.model.data.Forecast
 import com.alaskalany.android.shared.dto.ForecastDto
 
-class ForecastMapper :
+object ForecastMapper :
     DataMapper<ForecastDto, Forecast> {
-
-    private val currentlyMapper = CurrentlyMapper()
-    private val hourlyListMapper = HourlyListMapper()
-    private val dailyListMapper = DailyListMapper()
-    private val alertListMapper = AltersListMapper()
-    private val flagsMapper = FlagsMapper()
 
     override fun map(input: ForecastDto?): Forecast? {
         return if (input != null) {
             Forecast(
-                input.latitude,
-                input.longitude,
-                input.timezone,
-                currentlyMapper.map(input.currently),
-                hourlyListMapper.map(input.hourly),
-                dailyListMapper.map(input.daily),
-                alertListMapper.map(input.alerts),
-                flagsMapper.map(input.flags)
+                latitude = input.latitude,
+                longitude = input.longitude,
+                timezone = input.timezone,
+                currently = CurrentlyMapper.map(input.currently),
+                hourly = HourlyListMapper.map(input.hourly),
+                daily = DailyListMapper.map(input.daily),
+                alerts = AltersListMapper.map(input.alerts),
+                flags = FlagsMapper.map(input.flags)
             )
         } else {
             null

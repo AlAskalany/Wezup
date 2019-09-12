@@ -5,6 +5,7 @@ package com.alaskalany.android.model.enums
  */
 @Suppress("unused")
 enum class AlertSeverity(val value: String) {
+
     /**
      * An individual should be aware of potentially severe weather.
      */

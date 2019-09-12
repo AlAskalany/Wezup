@@ -1,7 +1,7 @@
 package com.alaskalany.android.shared
 
-import com.alaskalany.android.model.Currently
-import com.alaskalany.android.model.Forecast
+import com.alaskalany.android.model.data.Currently
+import com.alaskalany.android.model.data.Forecast
 import com.alaskalany.android.shared.mappers.CurrentlyMapper
 import com.alaskalany.android.shared.mappers.ForecastMapper
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +15,7 @@ class WeatherRepository(
         withContext(Dispatchers.IO) {
             val response = weatherService.forecast(user, latitude, longitude)
             if (response.isSuccessful) {
-                return@withContext ForecastMapper().map(response.body())
+                return@withContext ForecastMapper.map(response.body())
             } else {
                 return@withContext null
             }
@@ -28,7 +28,7 @@ class WeatherRepository(
             if (response.isSuccessful) {
                 val forecastDto = response.body()
                 if (forecastDto != null) {
-                    return@withContext CurrentlyMapper().map(forecastDto.currently)
+                    return@withContext CurrentlyMapper.map(forecastDto.currently)
                 } else {
                     return@withContext null
                 }

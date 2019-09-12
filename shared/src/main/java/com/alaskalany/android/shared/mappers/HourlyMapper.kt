@@ -1,31 +1,31 @@
 package com.alaskalany.android.shared.mappers
 
-import com.alaskalany.android.model.HourlyData
+import com.alaskalany.android.model.data.HourlyData
 import com.alaskalany.android.shared.dto.DataPoint
 
-class HourlyMapper : DataMapper<DataPoint, HourlyData> {
+object HourlyMapper : DataMapper<DataPoint, HourlyData> {
 
     override fun map(input: DataPoint?): HourlyData? {
         return if (input != null) {
             HourlyData(
-                input.time,
-                input.summary,
-                input.icon,
-                input.precipIntensity,
-                input.precipProbability,
-                input.temperature,
-                input.apparentTemperature,
-                input.dewPoint,
-                input.humidity,
-                input.pressure,
-                input.windSpeed,
-                input.windGust,
-                input.windBearing,
-                input.cloudCover,
-                input.uvIndex,
-                input.visibility,
-                input.ozone,
-                input.precipType
+                time = TimeMapper.map(input.time),
+                summary = SummaryMapper.map(input.summary),
+                icon = ForecastIconMapper.map(input.icon),
+                precipIntensity = input.precipIntensity,
+                precipProbability = input.precipProbability,
+                temperature = input.temperature,
+                apparentTemperature = TemperatureMapper.map(input.apparentTemperature),
+                dewPoint = DewPointMapper.map(input.dewPoint),
+                humidity = HumidityMapper.map(input.humidity),
+                pressure = PressureMapper.map(input.pressure),
+                windSpeed = WindSpeedMapper.map(input.windSpeed),
+                windGust = WindGustMapper.map(input.windGust),
+                windBearing = WindBearingMapper.map(input.windBearing),
+                cloudCover = CloudCoverMapper.map(input.cloudCover),
+                uvIndex = UvIndexMapper.map(input.uvIndex),
+                visibility = VisibilityMapper.map(input.visibility),
+                ozone = OzoneMapper.map(input.ozone),
+                precipType = PrecipTypeMapper.map(input.precipType)
             )
         } else {
             null

@@ -2,6 +2,7 @@ package com.alaskalany.android.model.enums
 
 @Suppress("unused")
 enum class ForecastUnits(val value: String) {
+
     /**
      * automatically select units based on geographic location
      */

@@ -2,6 +2,7 @@ package com.alaskalany.android.model.enums
 
 @Suppress("unused")
 enum class ForecastSiUnits(val value: String) {
+
     /**
      * Any summaries containing temperature or snow accumulation units will have their values in degrees Celsius or in centimeters (respectively).
      */

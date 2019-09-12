@@ -7,6 +7,7 @@ package com.alaskalany.android.model.enums
  */
 @Suppress("unused")
 enum class ForecastDataSource(val value: String) {
+
     /**
      * The USA NCEP’s Canadian Meteorological Center ensemble model, available globally.
      */

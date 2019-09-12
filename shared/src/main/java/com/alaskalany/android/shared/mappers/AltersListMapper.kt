@@ -1,14 +1,12 @@
 package com.alaskalany.android.shared.mappers
 
-import com.alaskalany.android.model.Alert
+import com.alaskalany.android.model.data.Alerts
 import com.alaskalany.android.shared.dto.AlertDto
 
-class AltersListMapper :
-    DataMapper<List<AlertDto?>, List<Alert?>> {
+object AltersListMapper :
+    DataMapper<List<AlertDto?>, Alerts> {
 
-    private val alertMapper = AlertMapper()
-
-    override fun map(input: List<AlertDto?>?): List<Alert?>? {
-        return input?.filterNotNull()?.map { alertMapper.map(it) }
+    override fun map(input: List<AlertDto?>?): Alerts {
+        return input?.filterNotNull()?.map { AlertMapper.map(it) }?.let { Alerts(it) } ?: Alerts()
     }
 }

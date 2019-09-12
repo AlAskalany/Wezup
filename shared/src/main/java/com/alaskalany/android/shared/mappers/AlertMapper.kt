@@ -1,21 +1,21 @@
 package com.alaskalany.android.shared.mappers
 
-import com.alaskalany.android.model.Alert
+import com.alaskalany.android.model.data.Alert
 import com.alaskalany.android.shared.dto.AlertDto
 
-class AlertMapper :
+object AlertMapper :
     DataMapper<AlertDto, Alert> {
 
     override fun map(input: AlertDto?): Alert? {
         return if (input != null) {
             Alert(
-                input.title,
-                input.regions,
-                input.severity,
-                input.time,
-                input.expires,
-                input.description,
-                input.uri
+                title = TitleMapper.map(input.title),
+                regions = input.regions,
+                severity = input.severity,
+                time = TimeMapper.map(input.time),
+                expires = input.expires,
+                description = DescriptionMapper.map(input.description),
+                uri = input.uri
             )
         } else {
             null
