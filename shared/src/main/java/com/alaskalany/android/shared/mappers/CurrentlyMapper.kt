@@ -5,6 +5,7 @@ import com.alaskalany.android.shared.dto.DataPoint
 
 class CurrentlyMapper :
     DataMapper<DataPoint, Currently> {
+
     override fun map(input: DataPoint?): Currently? {
         return if (input != null) {
             Currently(

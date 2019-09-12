@@ -5,6 +5,7 @@ import com.alaskalany.android.shared.dto.FlagsDto
 
 class FlagsMapper :
     DataMapper<FlagsDto, Flags> {
+
     override fun map(input: FlagsDto?): Flags? {
         return if (input != null) {
             Flags(

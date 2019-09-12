@@ -1,8 +1,5 @@
 package com.alaskalany.android.shared.dto
 
-import com.alaskalany.android.model.ICurrently
-import com.alaskalany.android.model.IDailyData
-import com.alaskalany.android.model.IHourlyData
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -18,7 +15,7 @@ data class DataPoint @JvmOverloads constructor(
      * [DataPoint] objects to midnight of the day, all according to the local time zone.
      */
     @field:Json(name = "time")
-    override val time: Double? = null,
+    val time: Double? = null,
     //</editor-fold>
 
     //<editor-fold desc="Optional">
@@ -29,7 +26,7 @@ data class DataPoint @JvmOverloads constructor(
      * values, so don’t use it for automated purposes: use the icon property, instead!)
      */
     @field:Json(name = "summary")
-    override val summary: String? = null,
+    val summary: String? = null,
 
     /**
      *  optional
@@ -42,7 +39,7 @@ data class DataPoint @JvmOverloads constructor(
      *  the future.)
      */
     @field:Json(name = "icon")
-    override val icon: String? = null,
+    val icon: String? = null,
 
     /**
      * optional
@@ -52,7 +49,7 @@ data class DataPoint @JvmOverloads constructor(
      * at all).
      */
     @field:Json(name = "precipIntensity")
-    override val precipIntensity: Double? = null,
+    val precipIntensity: Double? = null,
 
     /**
      * optional
@@ -60,7 +57,7 @@ data class DataPoint @JvmOverloads constructor(
      * The probability of precipitation occurring, between 0 and 1, inclusive.
      */
     @field:Json(name = "precipProbability")
-    override val precipProbability: Double? = null,
+    val precipProbability: Double? = null,
 
     /**
      * optional
@@ -72,7 +69,7 @@ data class DataPoint @JvmOverloads constructor(
      * information is usually estimated, rather than observed.)
      */
     @field:Json(name = "precipType")
-    override val precipType: String? = null,
+    val precipType: String? = null,
 
     /**
      * optional
@@ -80,7 +77,7 @@ data class DataPoint @JvmOverloads constructor(
      * The dew point in degrees Fahrenheit.
      */
     @field:Json(name = "dewPoint")
-    override val dewPoint: Double? = null,
+    val dewPoint: Double? = null,
 
     /**
      * optional
@@ -88,7 +85,7 @@ data class DataPoint @JvmOverloads constructor(
      * The relative humidity, between 0 and 1, inclusive.
      */
     @field:Json(name = "humidity")
-    override val humidity: Double? = null,
+    val humidity: Double? = null,
 
     /**
      * optional
@@ -96,7 +93,7 @@ data class DataPoint @JvmOverloads constructor(
      * The sea-level air pressure in millibars.
      */
     @field:Json(name = "pressure")
-    override val pressure: Double? = null,
+    val pressure: Double? = null,
 
     /**
      * optional
@@ -104,7 +101,7 @@ data class DataPoint @JvmOverloads constructor(
     The wind speed in miles per hour.
      */
     @field:Json(name = "windSpeed")
-    override val windSpeed: Double? = null,
+    val windSpeed: Double? = null,
 
     /**
      *  optional
@@ -112,7 +109,7 @@ data class DataPoint @JvmOverloads constructor(
     The wind gust speed in miles per hour.
      */
     @field:Json(name = "windGust")
-    override val windGust: Double? = null,
+    val windGust: Double? = null,
 
     /**
      * optional
@@ -120,7 +117,7 @@ data class DataPoint @JvmOverloads constructor(
     The direction that the wind is coming from in degrees, with true north at 0° and progressing clockwise. (If windSpeed is zero, then this value will not be defined.)
      */
     @field:Json(name = "windBearing")
-    override val windBearing: Double? = null,
+    val windBearing: Double? = null,
 
     /**
      * optional
@@ -128,7 +125,7 @@ data class DataPoint @JvmOverloads constructor(
      * The percentage of sky occluded by clouds, between 0 and 1, inclusive.
      */
     @field:Json(name = "cloudCover")
-    override val cloudCover: Double? = null,
+    val cloudCover: Double? = null,
 
     /**
      * optional
@@ -136,7 +133,7 @@ data class DataPoint @JvmOverloads constructor(
     The UV index.
      */
     @field:Json(name = "uvIndex")
-    override val uvIndex: Double? = null,
+    val uvIndex: Double? = null,
 
     /**
      * optional
@@ -144,7 +141,7 @@ data class DataPoint @JvmOverloads constructor(
     The average visibility in miles, capped at 10 miles.
      */
     @field:Json(name = "visibility")
-    override val visibility: Double? = null,
+    val visibility: Double? = null,
 
     /**
      * optional
@@ -152,7 +149,7 @@ data class DataPoint @JvmOverloads constructor(
      * The columnar density of total atmospheric ozone at the given time in Dobson units.
      */
     @field:Json(name = "ozone")
-    override val ozone: Double? = null,
+    val ozone: Double? = null,
     //</editor-fold>
 
     //<editor-fold desc="Daily">
@@ -162,7 +159,7 @@ data class DataPoint @JvmOverloads constructor(
      * The UNIX time of when the sun will rise during a given day.
      */
     @field:Json(name = "sunriseTime")
-    override val sunriseTime: Double? = null,
+    val sunriseTime: Double? = null,
 
     /**
      *  optional, only on daily
@@ -170,7 +167,7 @@ data class DataPoint @JvmOverloads constructor(
      *  The UNIX time of when the sun will set during a given day.
      */
     @field:Json(name = "sunsetTime")
-    override val sunsetTime: Double? = null,
+    val sunsetTime: Double? = null,
 
     /**
      * optional, only on daily
@@ -181,7 +178,7 @@ data class DataPoint @JvmOverloads constructor(
      * gibbous, and waning crescent moons, respectively.)
      */
     @field:Json(name = "moonPhase")
-    override val moonPhase: Double? = null,
+    val moonPhase: Double? = null,
 
     /**
      * optional, only on daily
@@ -189,7 +186,7 @@ data class DataPoint @JvmOverloads constructor(
      * The maximum value of precipIntensity during a given day.
      */
     @field:Json(name = "precipIntensityMax")
-    override val precipIntensityMax: Double? = null,
+    val precipIntensityMax: Double? = null,
 
     /**
      * optional, only on daily
@@ -197,7 +194,7 @@ data class DataPoint @JvmOverloads constructor(
      * The UNIX time of when precipIntensityMax occurs during a given day.
      */
     @field:Json(name = "precipIntensityMaxTime")
-    override val precipIntensityMaxTime: Double? = null,
+    val precipIntensityMaxTime: Double? = null,
 
     /**
      * optional, only on daily
@@ -205,7 +202,7 @@ data class DataPoint @JvmOverloads constructor(
      * The daytime high temperature.
      */
     @field:Json(name = "temperatureHigh")
-    override val temperatureHigh: Double? = null,
+    val temperatureHigh: Double? = null,
 
     /**
      * optional, only on daily
@@ -213,7 +210,7 @@ data class DataPoint @JvmOverloads constructor(
      * The UNIX time representing when the daytime high temperature occurs.
      */
     @field:Json(name = "temperatureHighTime")
-    override val temperatureHighTime: Double? = null,
+    val temperatureHighTime: Double? = null,
 
     /**
      * optional, only on daily
@@ -221,7 +218,7 @@ data class DataPoint @JvmOverloads constructor(
      * The overnight low temperature.
      */
     @field:Json(name = "temperatureLow")
-    override val temperatureLow: Double? = null,
+    val temperatureLow: Double? = null,
 
     /**
      * optional, only on daily
@@ -229,7 +226,7 @@ data class DataPoint @JvmOverloads constructor(
      * The UNIX time representing when the overnight low temperature occurs.
      */
     @field:Json(name = "temperatureLowTime")
-    override val temperatureLowTime: Double? = null,
+    val temperatureLowTime: Double? = null,
 
     /**
      * optional, only on daily
@@ -237,7 +234,7 @@ data class DataPoint @JvmOverloads constructor(
     The daytime high apparent temperature.
      */
     @field:Json(name = "apparentTemperatureHigh")
-    override val apparentTemperatureHigh: Double? = null,
+    val apparentTemperatureHigh: Double? = null,
 
     /**
      * optional, only on daily
@@ -245,7 +242,7 @@ data class DataPoint @JvmOverloads constructor(
     The UNIX time representing when the daytime high apparent temperature occurs.
      */
     @field:Json(name = "apparentTemperatureHighTime")
-    override val apparentTemperatureHighTime: Double? = null,
+    val apparentTemperatureHighTime: Double? = null,
 
     /**
      * optional, only on daily
@@ -253,7 +250,7 @@ data class DataPoint @JvmOverloads constructor(
     The overnight low apparent temperature.
      */
     @field:Json(name = "apparentTemperatureLow")
-    override val apparentTemperatureLow: Double? = null,
+    val apparentTemperatureLow: Double? = null,
 
     /**
      * optional, only on daily
@@ -261,7 +258,7 @@ data class DataPoint @JvmOverloads constructor(
     The UNIX time representing when the overnight low apparent temperature occurs.
      */
     @field:Json(name = "apparentTemperatureLowTime")
-    override val apparentTemperatureLowTime: Double? = null,
+    val apparentTemperatureLowTime: Double? = null,
 
     /**
      * optional, only on daily
@@ -269,7 +266,7 @@ data class DataPoint @JvmOverloads constructor(
     The time at which the maximum wind gust speed occurs during the day.
      */
     @field:Json(name = "windGustTime")
-    override val windGustTime: Double? = null,
+    val windGustTime: Double? = null,
 
     /**
      *  optional, only on daily
@@ -277,7 +274,7 @@ data class DataPoint @JvmOverloads constructor(
     The UNIX time of when the maximum uvIndex occurs during a given day.
      */
     @field:Json(name = "uvIndexTime")
-    override val uvIndexTime: Double? = null,
+    val uvIndexTime: Double? = null,
 
     /**
      * optional, only on daily
@@ -285,7 +282,7 @@ data class DataPoint @JvmOverloads constructor(
      * The minimum temperature during a given date.
      */
     @field:Json(name = "temperatureMin")
-    override val temperatureMin: Double? = null,
+    val temperatureMin: Double? = null,
 
     /**
      * optional, only on daily
@@ -293,7 +290,7 @@ data class DataPoint @JvmOverloads constructor(
      * The UNIX time representing when the minimum temperature during a given date occurs.
      */
     @field:Json(name = "temperatureMinTime")
-    override val temperatureMinTime: Double? = null,
+    val temperatureMinTime: Double? = null,
 
     /**
      * optional, only on daily
@@ -301,7 +298,7 @@ data class DataPoint @JvmOverloads constructor(
      * The maximum temperature during a given date.
      */
     @field:Json(name = "temperatureMax")
-    override val temperatureMax: Double? = null,
+    val temperatureMax: Double? = null,
 
     /**
      * optional, only on daily
@@ -309,7 +306,7 @@ data class DataPoint @JvmOverloads constructor(
      * The UNIX time representing when the maximum temperature during a given date occurs.
      */
     @field:Json(name = "temperatureMaxTime")
-    override val temperatureMaxTime: Double? = null,
+    val temperatureMaxTime: Double? = null,
 
     /**
      * optional, only on daily
@@ -317,7 +314,7 @@ data class DataPoint @JvmOverloads constructor(
     The minimum apparent temperature during a given date.
      */
     @field:Json(name = "apparentTemperatureMin")
-    override val apparentTemperatureMin: Double? = null,
+    val apparentTemperatureMin: Double? = null,
 
     /**
      * optional, only on daily
@@ -325,7 +322,7 @@ data class DataPoint @JvmOverloads constructor(
      * The UNIX time representing when the minimum apparent temperature during a given date occurs.
      */
     @field:Json(name = "apparentTemperatureMinTime")
-    override val apparentTemperatureMinTime: Double? = null,
+    val apparentTemperatureMinTime: Double? = null,
 
     /**
      * optional, only on daily
@@ -333,7 +330,7 @@ data class DataPoint @JvmOverloads constructor(
      * The maximum apparent temperature during a given date.
      */
     @field:Json(name = "apparentTemperatureMax")
-    override val apparentTemperatureMax: Double? = null,
+    val apparentTemperatureMax: Double? = null,
 
     /**
      * optional, only on daily
@@ -341,7 +338,7 @@ data class DataPoint @JvmOverloads constructor(
      * The UNIX time representing when the maximum apparent temperature during a given date occurs.
      */
     @field:Json(name = "apparentTemperatureMaxTime")
-    override val apparentTemperatureMaxTime: Double? = null,
+    val apparentTemperatureMaxTime: Double? = null,
     //</editor-fold>
 
     //<editor-fold desc="Hourly">
@@ -351,7 +348,7 @@ data class DataPoint @JvmOverloads constructor(
      * The air temperature in degrees Fahrenheit.
      */
     @field:Json(name = "temperature")
-    override val temperature: Double? = null,
+    val temperature: Double? = null,
 
     /**
      * optional, only on hourly
@@ -359,7 +356,7 @@ data class DataPoint @JvmOverloads constructor(
     The apparent (or “feels like”) temperature in degrees Fahrenheit.
      */
     @field:Json(name = "apparentTemperature")
-    override val apparentTemperature: Double? = null,
+    val apparentTemperature: Double? = null,
     //</editor-fold>
 
     //<editor-fold desc="Currently">
@@ -371,6 +368,6 @@ data class DataPoint @JvmOverloads constructor(
      * of that location.)
      */
     @field:Json(name = "nearestStormDistance")
-    override val nearestStormDistance: Double? = null
+    val nearestStormDistance: Double? = null
     //</editor-fold>
-) : ICurrently, IHourlyData, IDailyData
+)

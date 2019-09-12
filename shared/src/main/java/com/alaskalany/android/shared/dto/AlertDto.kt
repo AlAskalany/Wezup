@@ -1,6 +1,5 @@
 package com.alaskalany.android.shared.dto
 
-import com.alaskalany.android.model.IAlert
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -12,14 +11,14 @@ data class AlertDto @JvmOverloads constructor(
      * (required)
      */
     @field:Json(name = "title")
-    override val title: String? = null,
+    val title: String? = null,
     /**
      * An array of strings representing the names of the regions covered by this weather alert.
      *
      * (required)
      */
     @field:Json(name = "regions")
-    override val regions: List<String?>? = null,
+    val regions: List<String?>? = null,
     /**
      * The severity of the weather alert. Will take one of the following values: "advisory" (an
      * individual should be aware of potentially severe weather), "watch" (an individual should
@@ -29,33 +28,32 @@ data class AlertDto @JvmOverloads constructor(
      * (required)
      */
     @field:Json(name = "severity")
-    override val severity: String? = null,
+    val severity: String? = null,
     /**
      * The UNIX time at which the alert was issued.
      *
      * (required)
      */
     @field:Json(name = "time")
-    override val time: Double? = null,
+    val time: Double? = null,
     /**
      * The UNIX time at which the alert will expire.
      *
      * (required)
      */
     @field:Json(name = "expires")
-    override val expires: Double? = null,
+    val expires: Double? = null,
     /**
      * A detailed description of the alert.
      *
      * (required)
      */
     @field:Json(name = "")
-    override val description: String? = null,
+    val description: String? = null,
     /**
      * An HTTP(S) URI that one may refer to for detailed information about the alert.
      *
      * (required)
      */
-    @field:Json(name = "uri")
-    override val uri: String? = null
-): IAlert
+    @field:Json(name = "uri") val uri: String? = null
+)

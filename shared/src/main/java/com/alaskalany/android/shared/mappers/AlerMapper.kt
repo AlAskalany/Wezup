@@ -5,6 +5,7 @@ import com.alaskalany.android.shared.dto.AlertDto
 
 class AlerMapper :
     DataMapper<AlertDto, Alert> {
+
     override fun map(input: AlertDto?): Alert? {
         return if (input != null) {
             Alert(

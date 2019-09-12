@@ -1,7 +1,5 @@
 package com.alaskalany.android.shared.dto
 
-import com.alaskalany.android.model.IDaily
-import com.alaskalany.android.model.IHourly
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -13,7 +11,7 @@ data class DataBlock @JvmOverloads constructor(
      * (optional)
      */
     @field:Json(name = "summary")
-    override val summary: String? = null,
+    val summary: String? = null,
     /**
      * A machine-readable text summary of this [DataBlock]. (May take on the same values as the
      * icon property of [DataPoint]s.)
@@ -21,7 +19,7 @@ data class DataBlock @JvmOverloads constructor(
      * (optional)
      */
     @field:Json(name = "icon")
-    override val icon: String? = null,
+    val icon: String? = null,
     /**
      * An array of [DataPoint], ordered by time, which together describe the weather conditions at
      * the requested location over time.
@@ -29,5 +27,5 @@ data class DataBlock @JvmOverloads constructor(
      * (required)
      */
     @field:Json(name = "data")
-    override val `data`: List<DataPoint?>? = null
-): IDaily, IHourly
+    val `data`: List<DataPoint?>? = null
+)
