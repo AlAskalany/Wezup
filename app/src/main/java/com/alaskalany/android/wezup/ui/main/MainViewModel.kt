@@ -1,19 +1,31 @@
 package com.alaskalany.android.wezup.ui.main
 
+import android.app.Application
+import android.app.Service
 import android.location.Location
+import android.net.ConnectivityManager
 import androidx.annotation.MainThread
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
-import com.alaskalany.android.model.data.period.DailyData
 import com.alaskalany.android.model.data.Forecast
+import com.alaskalany.android.model.data.period.DailyData
 import com.alaskalany.android.model.enums.ForecastIcon
 import com.alaskalany.android.shared.WeatherRepository
+import com.alaskalany.android.wezup.WezupApplication
 
-class MainViewModel : ViewModel() {
+class MainViewModel(application: WezupApplication) : AndroidViewModel(application) {
 
     private val weatherRepository: WeatherRepository = WeatherRepository()
+
+    private val _online: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>()
+    }
+
+    val online: LiveData<Boolean> = Transformations.map(_online) {
+        it
+    }
 
     private val _temperatureLiveData: MutableLiveData<String> by lazy {
         MutableLiveData<String>()
@@ -69,6 +81,9 @@ class MainViewModel : ViewModel() {
         it
     }
 
+    private var latitude: String? = null
+    private var longitude: String? = null
+
     init {
         _temperatureLiveData.value = "12"
         _weatherDescriptionLiveData.value = "Good Weather"
@@ -77,19 +92,31 @@ class MainViewModel : ViewModel() {
         _longitude.value = "-"
         _latitude.value = "-"
         _timeZoneLiveData.value = "-"
+        _online.value = isConnected()
     }
 
-    private suspend fun getForecast(latitude: String, longitude: String) {
-        val forecast = weatherRepository.fetchForecast(
-            "dafc50f09edd941ce1876d78a0a31b77",
-            latitude,
-            longitude
-        )
+    private fun isConnected(): Boolean {
+        val cm =
+            getApplication<Application>().getSystemService(Service.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork = cm.activeNetworkInfo
+        return activeNetwork?.isConnected == true
+    }
 
-        println(forecast)
+    private suspend fun getForecast() {
+        if (isConnected()) {
+            val lat = latitude
+            val long = longitude
+            if (lat != null && long != null) {
+                val forecast = weatherRepository.fetchForecast(
+                    "dafc50f09edd941ce1876d78a0a31b77", lat, long
+                )
 
-        updateCurrently(forecast)
-        updateDaily(forecast)
+                println(forecast)
+
+                updateCurrently(forecast)
+                updateDaily(forecast)
+            }
+        }
     }
 
     @MainThread
@@ -108,9 +135,17 @@ class MainViewModel : ViewModel() {
 
     suspend fun setLocation(location: Location?) {
         if (location != null) {
-            val lat = location.latitude.toString()
-            val long = location.longitude.toString()
-            getForecast(lat, long)
+            latitude = location.latitude.toString()
+            longitude = location.longitude.toString()
+            getForecast()
         }
+    }
+
+    fun setOnlineState(connected: Boolean) {
+        _online.value = connected
+    }
+
+    suspend fun refresh() {
+        getForecast()
     }
 }

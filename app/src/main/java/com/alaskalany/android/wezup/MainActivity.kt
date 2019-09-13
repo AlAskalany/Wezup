@@ -1,8 +1,10 @@
 package com.alaskalany.android.wezup
 
 import android.Manifest
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.location.Location
+import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Looper
@@ -11,11 +13,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.alaskalany.android.model.data.period.DailyData
 import com.alaskalany.android.wezup.databinding.MainActivityBinding
 import com.alaskalany.android.wezup.ui.main.MainFragment
 import com.alaskalany.android.wezup.ui.main.MainViewModel
+import com.alaskalany.android.wezup.ui.main.OfflineFragment
 import com.google.android.gms.location.*
 import kotlinx.coroutines.*
 import java.util.concurrent.TimeUnit
@@ -23,31 +27,50 @@ import kotlin.coroutines.CoroutineContext
 
 class MainActivity : AppCompatActivity(),
     CoroutineScope,
-    MainFragment.OnListFragmentInteractionListener {
+    MainFragment.OnListFragmentInteractionListener,
+    NetworkStateReceiver.NetworkStateListener {
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + job
     private lateinit var job: Job
-
     val handler =
         CoroutineExceptionHandler { coroutineContext: CoroutineContext, throwable: Throwable ->
-            Log.e("CoroutineExceptionHandler", throwable.message, throwable)
+            Log.e("CoroutineExcepHandler", throwable.message, throwable)
         }
-
     private lateinit var binding: MainActivityBinding
     private lateinit var viewModel: MainViewModel
     private lateinit var locationCaptain: LocationCaptain
     private lateinit var locationRequest: LocationRequest
+    override fun onNetworkStateChanged(connected: Boolean) {
+        viewModel.setOnlineState(connected)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         job = SupervisorJob()
+        registerReceiver(
+            NetworkStateReceiver(), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+        )
         binding = DataBindingUtil.setContentView(this, R.layout.main_activity)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.container, MainFragment.newInstance(1)).commitNow()
         }
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        viewModel =
+            ViewModelProviders.of(this, MainViewModelFactory(application as WezupApplication))
+                .get(MainViewModel::class.java)
+
+        viewModel.online.observe(this, Observer { isConnected ->
+            supportFragmentManager.beginTransaction().run {
+                val (fragment, fragmentTag) = if (isConnected != null && isConnected == true) {
+                    MainFragment.newInstance(1) to MainFragment.TAG
+                } else {
+                    OfflineFragment.newInstance("", "") to OfflineFragment.TAG
+                }
+                replace(R.id.container, fragment, fragmentTag)
+                commitNow()
+            }
+        })
 
         val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
@@ -75,8 +98,8 @@ class MainActivity : AppCompatActivity(),
         }
 
         locationRequest = LocationRequest().apply {
-            interval = Companion.UPDATE_INTERVAL_IN_MILLISECONDS
-            fastestInterval = Companion.FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS
+            interval = UPDATE_INTERVAL_IN_MILLISECONDS
+            fastestInterval = FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
 
@@ -99,17 +122,22 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        NetworkStateReceiver.networkStateListener = this
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        job.cancel()
+    }
+
     private fun updateLocationInViewModel(location: Location) {
         if (::viewModel.isInitialized) {
             launch {
                 viewModel.setLocation(location)
             }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        job.cancel()
     }
 
     override fun onListFragmentInteraction(item: DailyData?) {
@@ -121,3 +149,4 @@ class MainActivity : AppCompatActivity(),
         private val FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = UPDATE_INTERVAL_IN_MILLISECONDS / 2
     }
 }
+

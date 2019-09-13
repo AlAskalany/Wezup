@@ -59,11 +59,7 @@ object DummyContent {
             }
             else -> {
                 return DummyItem(
-                    position.toString(),
-                    "Item $position",
-                    makeDetails(position),
-                    "",
-                    ""
+                    position.toString(), "Item $position", makeDetails(position), "", ""
                 )
             }
         }

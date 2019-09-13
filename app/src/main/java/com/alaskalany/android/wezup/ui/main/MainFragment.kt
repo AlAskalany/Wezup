@@ -14,12 +14,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alaskalany.android.model.data.period.DailyData
+import com.alaskalany.android.wezup.MainViewModelFactory
 import com.alaskalany.android.wezup.R
+import com.alaskalany.android.wezup.WezupApplication
 import com.alaskalany.android.wezup.databinding.MainFragmentBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
 class MainFragment : Fragment(), CoroutineScope {
@@ -55,7 +54,10 @@ class MainFragment : Fragment(), CoroutineScope {
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.main_fragment, container, false)
         binding.lifecycleOwner = this
-        viewModel = ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java)
+        viewModel = ViewModelProviders.of(
+            requireActivity(),
+            MainViewModelFactory(requireActivity().application as WezupApplication)
+        ).get(MainViewModel::class.java)
         binding.model = viewModel
         viewModel.weatherIcon.observe(this, Observer { icon ->
             icon?.let {
@@ -66,26 +68,34 @@ class MainFragment : Fragment(), CoroutineScope {
                 )
             }
         })
+        if (!::recyclerView.isInitialized) {
+            recyclerView = binding.recyclerViewMain
+        }
+        if (!::myItemRecyclerViewAdapter.isInitialized) {
+            myItemRecyclerViewAdapter = MyItemRecyclerViewAdapter(mutableListOf(), listener)
+            // Set the adapter
+            with(recyclerView) {
+                layoutManager = when {
+                    columnCount <= 1 -> LinearLayoutManager(context)
+                    else -> GridLayoutManager(context, columnCount)
+                }
+                adapter = myItemRecyclerViewAdapter
+            }
+        }
         viewModel.daily.observe(this, Observer { newList ->
             newList?.let {
-                if (!::recyclerView.isInitialized) {
-                    recyclerView = binding.recyclerViewMain
-                }
-                if (!::myItemRecyclerViewAdapter.isInitialized) {
-                    myItemRecyclerViewAdapter =
-                        MyItemRecyclerViewAdapter(newList.toMutableList(), listener)
-                    // Set the adapter
-                    with(recyclerView) {
-                        layoutManager = when {
-                            columnCount <= 1 -> LinearLayoutManager(context)
-                            else -> GridLayoutManager(context, columnCount)
-                        }
-                        adapter = myItemRecyclerViewAdapter
-                    }
-                }
+
                 if (::myItemRecyclerViewAdapter.isInitialized) {
                     myItemRecyclerViewAdapter.swap(newList)
                 }
+            }
+        })
+        viewModel.online.observe(this, Observer {
+            if (it == true) {
+                binding.imageViewOnline.setImageDrawable(resources.getDrawable(android.R.drawable.presence_online))
+                launch { viewModel.refresh() }
+            } else {
+                binding.imageViewOnline.setImageDrawable(resources.getDrawable(android.R.drawable.presence_offline))
             }
         })
         return binding.root
@@ -142,6 +152,7 @@ class MainFragment : Fragment(), CoroutineScope {
     }
 
     companion object {
+        const val TAG: String = "MainFragment"
         // TODO: Customize parameter argument names
         const val ARG_COLUMN_COUNT = "column-count"
 
