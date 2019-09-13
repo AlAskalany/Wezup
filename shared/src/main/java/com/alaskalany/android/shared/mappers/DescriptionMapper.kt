@@ -1,6 +1,6 @@
 package com.alaskalany.android.shared.mappers
 
-import com.alaskalany.android.model.data.Description
+import com.alaskalany.android.model.types.Description
 import com.alaskalany.android.shared.DataMapper
 
 object DescriptionMapper : DataMapper<String, Description> {

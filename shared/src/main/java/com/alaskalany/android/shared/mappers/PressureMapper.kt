@@ -1,6 +1,6 @@
 package com.alaskalany.android.shared.mappers
 
-import com.alaskalany.android.model.data.Pressure
+import com.alaskalany.android.model.types.Pressure
 import com.alaskalany.android.shared.NonNullDataMapper
 
 object PressureMapper :

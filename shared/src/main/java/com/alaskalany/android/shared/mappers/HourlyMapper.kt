@@ -1,6 +1,6 @@
 package com.alaskalany.android.shared.mappers
 
-import com.alaskalany.android.model.data.HourlyData
+import com.alaskalany.android.model.data.period.HourlyData
 import com.alaskalany.android.shared.DataMapper
 import com.alaskalany.android.shared.dto.DataPoint
 
@@ -12,9 +12,9 @@ object HourlyMapper : DataMapper<DataPoint, HourlyData> {
                 time = TimeMapper.map(input.time),
                 summary = SummaryMapper.map(input.summary),
                 icon = ForecastIconMapper.map(input.icon),
-                precipIntensity = input.precipIntensity,
-                precipProbability = input.precipProbability,
-                temperature = input.temperature,
+                precipIntensity = PrecipIntensityMapper.map(input.precipIntensity),
+                precipProbability = PrecipProbabilityMapper.map(input.precipProbability),
+                temperature = TemperatureMapper.map(input.temperature),
                 apparentTemperature = TemperatureMapper.map(input.apparentTemperature),
                 dewPoint = DewPointMapper.map(input.dewPoint),
                 humidity = HumidityMapper.map(input.humidity),

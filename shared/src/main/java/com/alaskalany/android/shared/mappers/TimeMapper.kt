@@ -1,6 +1,6 @@
 package com.alaskalany.android.shared.mappers
 
-import com.alaskalany.android.model.data.Time
+import com.alaskalany.android.model.types.Time
 import com.alaskalany.android.shared.NonNullDataMapper
 
 object TimeMapper : NonNullDataMapper<Double, Time> {

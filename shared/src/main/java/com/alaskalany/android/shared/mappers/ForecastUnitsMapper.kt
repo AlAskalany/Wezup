@@ -1,6 +1,6 @@
 package com.alaskalany.android.shared.mappers
 
-import com.alaskalany.android.model.data.ForecastUnitsType
+import com.alaskalany.android.model.types.ForecastUnitsType
 import com.alaskalany.android.model.enums.ForecastUnits
 import com.alaskalany.android.shared.DataMapper
 

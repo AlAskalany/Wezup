@@ -1,6 +1,6 @@
 package com.alaskalany.android.shared.mappers
 
-import com.alaskalany.android.model.data.CloudCover
+import com.alaskalany.android.model.types.CloudCover
 import com.alaskalany.android.shared.NonNullDataMapper
 
 object CloudCoverMapper :

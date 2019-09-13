@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.alaskalany.android.model.data.DailyData
+import com.alaskalany.android.model.data.period.DailyData
 import com.alaskalany.android.model.data.Forecast
 import com.alaskalany.android.model.enums.ForecastIcon
 import com.alaskalany.android.shared.WeatherRepository

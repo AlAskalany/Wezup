@@ -1,6 +1,6 @@
 package com.alaskalany.android.shared
 
-import com.alaskalany.android.model.data.Currently
+import com.alaskalany.android.model.data.period.CurrentlyData
 import com.alaskalany.android.model.data.Forecast
 import com.alaskalany.android.shared.mappers.CurrentlyMapper
 import com.alaskalany.android.shared.mappers.ForecastMapper
@@ -21,7 +21,7 @@ class WeatherRepository(
             }
         }
 
-    suspend fun fetchCurrently(user: String, latitude: String, longitude: String): Currently? =
+    suspend fun fetchCurrently(user: String, latitude: String, longitude: String): CurrentlyData? =
         withContext(Dispatchers.IO) {
 
             val response = weatherService.forecast(user, latitude, longitude)

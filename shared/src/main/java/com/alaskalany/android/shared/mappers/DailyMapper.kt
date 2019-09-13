@@ -1,6 +1,6 @@
 package com.alaskalany.android.shared.mappers
 
-import com.alaskalany.android.model.data.DailyData
+import com.alaskalany.android.model.data.period.DailyData
 import com.alaskalany.android.shared.DataMapper
 import com.alaskalany.android.shared.dto.DataPoint
 

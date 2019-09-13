@@ -1,6 +1,6 @@
 package com.alaskalany.android.shared
 
-import com.alaskalany.android.model.data.Data
+import com.alaskalany.android.model.Data
 
 interface DataMapper<in I, out O : Data<*>> {
 

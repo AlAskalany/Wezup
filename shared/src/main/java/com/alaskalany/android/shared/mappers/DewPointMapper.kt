@@ -1,6 +1,6 @@
 package com.alaskalany.android.shared.mappers
 
-import com.alaskalany.android.model.data.DewPoint
+import com.alaskalany.android.model.types.DewPoint
 import com.alaskalany.android.shared.NonNullDataMapper
 
 object DewPointMapper :

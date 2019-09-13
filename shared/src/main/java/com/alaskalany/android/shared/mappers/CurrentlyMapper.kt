@@ -1,15 +1,15 @@
 package com.alaskalany.android.shared.mappers
 
-import com.alaskalany.android.model.data.Currently
+import com.alaskalany.android.model.data.period.CurrentlyData
 import com.alaskalany.android.shared.DataMapper
 import com.alaskalany.android.shared.dto.DataPoint
 
 object CurrentlyMapper :
-    DataMapper<DataPoint, Currently> {
+    DataMapper<DataPoint, CurrentlyData> {
 
-    override fun map(input: DataPoint?): Currently? {
+    override fun map(input: DataPoint?): CurrentlyData? {
         return if (input != null) {
-            Currently(
+            CurrentlyData(
                 time = TimeMapper.map(input.time),
                 summary = SummaryMapper.map(input.summary),
                 icon = ForecastIconMapper.map(input.icon),

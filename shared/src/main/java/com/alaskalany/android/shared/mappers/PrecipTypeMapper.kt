@@ -1,6 +1,6 @@
 package com.alaskalany.android.shared.mappers
 
-import com.alaskalany.android.model.data.PrecipType
+import com.alaskalany.android.model.types.PrecipType
 import com.alaskalany.android.shared.NonNullDataMapper
 
 object PrecipTypeMapper : NonNullDataMapper<String, PrecipType> {

@@ -1,7 +1,7 @@
 package com.alaskalany.android.wezup.ui.main
 
 import androidx.recyclerview.widget.DiffUtil
-import com.alaskalany.android.model.data.DailyData
+import com.alaskalany.android.model.data.period.DailyData
 
 class DailyDiffCallback(
     private var oldList: List<DailyData?>? = null,

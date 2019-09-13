@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.alaskalany.android.model.data.DailyData
+import com.alaskalany.android.model.data.period.DailyData
 import com.alaskalany.android.model.enums.ForecastIcon
 import com.alaskalany.android.wezup.R
 import com.alaskalany.android.wezup.ui.main.MainFragment.OnListFragmentInteractionListener

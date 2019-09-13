@@ -1,6 +1,6 @@
 package com.alaskalany.android.shared.mappers
 
-import com.alaskalany.android.model.data.Title
+import com.alaskalany.android.model.types.Title
 import com.alaskalany.android.shared.NonNullDataMapper
 
 object TitleMapper : NonNullDataMapper<String, Title> {
