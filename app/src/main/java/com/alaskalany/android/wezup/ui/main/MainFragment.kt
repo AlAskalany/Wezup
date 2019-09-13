@@ -1,18 +1,11 @@
 package com.alaskalany.android.wezup.ui.main
 
-import android.Manifest
-import android.app.Service
 import android.content.Context
-import android.content.pm.PackageManager
-import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -23,10 +16,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alaskalany.android.model.data.period.DailyData
 import com.alaskalany.android.wezup.R
 import com.alaskalany.android.wezup.databinding.MainFragmentBinding
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlin.coroutines.CoroutineContext
 
-class MainFragment : Fragment(), CoroutineScope, LocationListener {
+class MainFragment : Fragment(), CoroutineScope {
 
     //</editor-fold>
 
@@ -43,8 +39,6 @@ class MainFragment : Fragment(), CoroutineScope, LocationListener {
 
     private lateinit var binding: MainFragmentBinding
 
-    private lateinit var locationManager: LocationManager
-
     private lateinit var recyclerView: RecyclerView
 
     private lateinit var myItemRecyclerViewAdapter: MyItemRecyclerViewAdapter
@@ -57,12 +51,11 @@ class MainFragment : Fragment(), CoroutineScope, LocationListener {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.main_fragment, container, false)
         binding.lifecycleOwner = this
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java)
         binding.model = viewModel
         viewModel.weatherIcon.observe(this, Observer { icon ->
             icon?.let {
@@ -95,21 +88,6 @@ class MainFragment : Fragment(), CoroutineScope, LocationListener {
                 }
             }
         })
-        locationManager = activity?.getSystemService(Service.LOCATION_SERVICE) as LocationManager
-        if (ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            locationManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER,
-                1000L,
-                100.0F,
-                this
-            )
-        } else {
-            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
-        }
         return binding.root
     }
 
@@ -130,9 +108,7 @@ class MainFragment : Fragment(), CoroutineScope, LocationListener {
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 1) {
@@ -142,32 +118,9 @@ class MainFragment : Fragment(), CoroutineScope, LocationListener {
         }
     }
 
-    //<editor-fold desc="LocationListener">
-    override fun onLocationChanged(location: Location?) {
-        if (::viewModel.isInitialized) {
-            launch {
-                viewModel.setLocation(location)
-            }
-        }
-    }
-
-    override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {
-        shortToast("statusChanged $p0")
-    }
-
-    override fun onProviderEnabled(p0: String?) {
-        shortToast("providerEnabled $p0")
-    }
-
-    override fun onProviderDisabled(p0: String?) {
-        shortToast("providerDisabled $p0")
-    }
-
     private fun shortToast(s: String) {
         Toast.makeText(
-            requireContext(),
-            s,
-            Toast.LENGTH_SHORT
+            requireContext(), s, Toast.LENGTH_SHORT
         ).show()
     }
 
@@ -194,11 +147,10 @@ class MainFragment : Fragment(), CoroutineScope, LocationListener {
 
         // TODO: Customize parameter initialization
         @JvmStatic
-        fun newInstance(columnCount: Int) =
-            MainFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_COLUMN_COUNT, columnCount)
-                }
+        fun newInstance(columnCount: Int) = MainFragment().apply {
+            arguments = Bundle().apply {
+                putInt(ARG_COLUMN_COUNT, columnCount)
             }
+        }
     }
 }
