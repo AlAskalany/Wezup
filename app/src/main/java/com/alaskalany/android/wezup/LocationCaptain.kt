@@ -38,11 +38,13 @@ class LocationCaptain(
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onStart() {
         Log.d(TAG, "onStart")
+        lifecycle.addObserver(this)
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onStop() {
         Log.d(TAG, "onStop")
+        lifecycle.removeObserver(this)
     }
 
     inner class MyLocationListener : LocationListener {
