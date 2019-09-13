@@ -29,6 +29,11 @@ class MainActivity : AppCompatActivity(),
         get() = Dispatchers.Main + job
     private lateinit var job: Job
 
+    val handler =
+        CoroutineExceptionHandler { coroutineContext: CoroutineContext, throwable: Throwable ->
+            Log.e("CoroutineExceptionHandler", throwable.message, throwable)
+        }
+
     private lateinit var binding: MainActivityBinding
     private lateinit var viewModel: MainViewModel
     private lateinit var locationCaptain: LocationCaptain
@@ -47,7 +52,7 @@ class MainActivity : AppCompatActivity(),
         val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
             if (location != null) {
-                launch {
+                launch(handler) {
                     viewModel.setLocation(location)
                 }
             } else {
