@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Wezup</string>
+    <string name="celsius_symbol">°</string>
+    <string name="description_imageView_current_weather_icon">Current weather icon</string>
+    <string name="description_imageView_day_icon">Day weather icon</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="offline">Offline</string>
 </resources>
