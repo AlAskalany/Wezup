@@ -61,7 +61,7 @@ class MainFragment : Fragment(), CoroutineScope {
         binding.model = viewModel
         viewModel.weatherIcon.observe(this, Observer { icon ->
             icon?.let {
-                binding.imageViewCurrentWeatherIcon.setImageDrawable(
+                binding.currently.imageViewCurrentWeatherIcon.setImageDrawable(
                     resources.getDrawable(
                         getWeatherIconDrawable(it)
                     )
@@ -69,7 +69,7 @@ class MainFragment : Fragment(), CoroutineScope {
             }
         })
         if (!::recyclerView.isInitialized) {
-            recyclerView = binding.recyclerViewMain
+            recyclerView = binding.daily.recyclerViewMain
         }
         if (!::myItemRecyclerViewAdapter.isInitialized) {
             val mutableListOf = mutableListOf<DailyData?>()
@@ -98,10 +98,10 @@ class MainFragment : Fragment(), CoroutineScope {
         })
         viewModel.online.observe(this, Observer {
             if (it == true) {
-                binding.imageViewOnline.setImageDrawable(resources.getDrawable(android.R.drawable.presence_online))
+                binding.currently.imageViewOnline.setImageDrawable(resources.getDrawable(android.R.drawable.presence_online))
                 launch { viewModel.refresh() }
             } else {
-                binding.imageViewOnline.setImageDrawable(resources.getDrawable(android.R.drawable.presence_offline))
+                binding.currently.imageViewOnline.setImageDrawable(resources.getDrawable(android.R.drawable.presence_offline))
             }
         })
         return binding.root

@@ -43,11 +43,10 @@ class MainActivity : AppCompatActivity(),
     private lateinit var viewModel: MainViewModel
     private lateinit var locationCaptain: LocationCaptain
     private lateinit var locationRequest: LocationRequest
+    private lateinit var networkStateReceiver: NetworkStateReceiver
     override fun onNetworkStateChanged(connected: Boolean) {
         viewModel.setOnlineState(connected)
     }
-
-    private val networkStateReceiver = NetworkStateReceiver()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,12 +61,12 @@ class MainActivity : AppCompatActivity(),
         }
         launch {
             delay(3000)
+            networkStateReceiver = NetworkStateReceiver()
             registerReceiver(
                 networkStateReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
             )
             viewModel = ViewModelProviders.of(
-                this@MainActivity,
-                MainViewModelFactory(application as WezupApplication)
+                this@MainActivity, MainViewModelFactory(application as WezupApplication)
             ).get(MainViewModel::class.java)
 
             viewModel.online.observe(this@MainActivity, Observer { isConnected ->
@@ -142,8 +141,12 @@ class MainActivity : AppCompatActivity(),
 
     override fun onDestroy() {
         super.onDestroy()
-        unregisterReceiver(networkStateReceiver)
-        job.cancel()
+        if (::networkStateReceiver.isInitialized) {
+            unregisterReceiver(networkStateReceiver)
+        }
+        if (::job.isInitialized) {
+            job.cancel()
+        }
     }
 
     private fun updateLocationInViewModel(location: Location) {

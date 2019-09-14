@@ -48,8 +48,10 @@ class MyItemRecyclerViewAdapter(
         }
         holder.mDayTextView.text = item?.dayName
         holder.mWeatherSummaryTextView.text = item?.summary?.text
-        holder.mTempMaxTextView.text = item?.temperatureHigh?.text
-        holder.mTempMinTextView.text = item?.temperatureLow?.text
+        holder.mTempMaxTextView.text =
+            holder.mView.resources.getString(R.string.celsius, item?.temperatureHigh?.text)
+        holder.mTempMinTextView.text =
+            holder.mView.resources.getString(R.string.celsius, item?.temperatureLow?.text)
 
         with(holder.mView) {
             tag = item
