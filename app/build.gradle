@@ -13,8 +13,8 @@ android {
         applicationId "com.alaskalany.android.wezup"
         minSdkVersion minSdkVer
         targetSdkVersion targetSdkVer
-        versionCode 1
-        versionName "1.0"
+        versionCode 1700010100
+        versionName "1.1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled = true
