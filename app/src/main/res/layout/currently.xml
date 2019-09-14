@@ -59,7 +59,7 @@
                     android:id="@+id/textView_temperature"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{model.temperature}"
+                    android:text="@{@string/celsius(model.temperature)}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textSize="36sp"
                     tools:text="19°" />

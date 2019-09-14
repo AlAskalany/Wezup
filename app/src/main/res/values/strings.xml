@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Wezup</string>
-    <string name="celsius_symbol">°</string>
+    <string name="celsius">%s°C</string>
     <string name="description_imageView_current_weather_icon">Current weather icon</string>
     <string name="description_imageView_day_icon">Day weather icon</string>
 
