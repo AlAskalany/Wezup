@@ -1,8 +1,8 @@
 package com.alaskalany.android.wezup
 
-import android.app.Application
+import androidx.multidex.MultiDexApplication
 
-class WezupApplication : Application() {
+class WezupApplication : MultiDexApplication() {
 
     override fun onCreate() {
         super.onCreate()
