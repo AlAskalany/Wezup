@@ -43,6 +43,9 @@ class MyItemRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
+        if (item?.dummy == true) {
+            return
+        }
         holder.mDayTextView.text = item?.dayName
         holder.mWeatherSummaryTextView.text = item?.summary?.text
         holder.mTempMaxTextView.text = item?.temperatureHigh?.text

@@ -72,7 +72,13 @@ class MainFragment : Fragment(), CoroutineScope {
             recyclerView = binding.recyclerViewMain
         }
         if (!::myItemRecyclerViewAdapter.isInitialized) {
-            myItemRecyclerViewAdapter = MyItemRecyclerViewAdapter(mutableListOf(), listener)
+            val mutableListOf = mutableListOf<DailyData?>()
+            repeat(7) {
+                mutableListOf.add(DailyData().apply {
+                    dummy = true
+                })
+            }
+            myItemRecyclerViewAdapter = MyItemRecyclerViewAdapter(mutableListOf, listener)
             // Set the adapter
             with(recyclerView) {
                 layoutManager = when {

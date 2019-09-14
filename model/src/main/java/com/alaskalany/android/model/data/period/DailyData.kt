@@ -55,6 +55,8 @@ data class DailyData @JvmOverloads constructor(
     HasPrecipType,
     HasDetailedWindGust, HasDetailedPrecipIntensity {
 
+    var dummy: Boolean = false
+
     val dayName: String?
         get() {
             val asd = Date().also {
