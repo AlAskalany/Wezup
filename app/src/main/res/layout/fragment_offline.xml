@@ -20,6 +20,7 @@
             android:layout_marginTop="32dp"
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="32dp"
+            android:gravity="center"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -29,9 +30,8 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/ic_action_name"
                 tools:layout_editor_absoluteX="130dp"
@@ -41,7 +41,6 @@
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.3"
                 android:gravity="center"
                 android:text="@string/offline"
                 android:textAlignment="center"

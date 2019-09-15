@@ -9,7 +9,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -158,7 +157,7 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onListFragmentInteraction(item: DailyData?) {
-        Toast.makeText(this, "Item Clicked", Toast.LENGTH_SHORT).show()
+
     }
 
     companion object {

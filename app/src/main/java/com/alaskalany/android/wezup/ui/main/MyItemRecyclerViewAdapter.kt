@@ -3,6 +3,8 @@ package com.alaskalany.android.wezup.ui.main
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
@@ -12,6 +14,7 @@ import com.alaskalany.android.model.enums.ForecastIcon
 import com.alaskalany.android.wezup.R
 import com.alaskalany.android.wezup.ui.main.MainFragment.OnListFragmentInteractionListener
 import com.alaskalany.android.wezup.ui.main.dummy.DummyContent.DummyItem
+import com.google.android.material.card.MaterialCardView
 import kotlinx.android.synthetic.main.fragment_item.view.*
 
 /**
@@ -44,8 +47,14 @@ class MyItemRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
         if (item?.dummy == true) {
+            animateItemLoading(holder, 1000, true)
             return
         }
+
+        holder.mView.clearAnimation()
+
+        animateItemLoaded(holder)
+
         holder.mDayTextView.text = item?.dayName
         holder.mWeatherSummaryTextView.text = item?.summary?.text
         holder.mTempMaxTextView.text =
@@ -66,6 +75,29 @@ class MyItemRecyclerViewAdapter(
         )
     }
 
+    private fun animateItemLoaded(holder: ViewHolder) {
+        val animation = AnimationUtils.loadAnimation(
+            holder.mView.context, android.R.anim.fade_in
+        )
+        animation.duration = 500
+        holder.mView.startAnimation(animation)
+    }
+
+    private fun animateItemLoading(
+        holder: ViewHolder, durationMs: Long, repeat: Boolean
+    ) {
+        val animation = AnimationUtils.loadAnimation(holder.mView.context, android.R.anim.fade_in)
+        animation.interpolator = AnimationUtils.loadInterpolator(
+            holder.mView.context, android.R.anim.accelerate_decelerate_interpolator
+        )
+        animation.duration = durationMs
+        if (repeat) {
+            animation.repeatCount = Animation.INFINITE
+            animation.repeatMode = Animation.REVERSE
+        }
+        holder.mView.startAnimation(animation)
+    }
+
     override fun getItemCount(): Int = mValues.size
 
     fun swap(list: List<DailyData?>) {
@@ -75,6 +107,7 @@ class MyItemRecyclerViewAdapter(
     }
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
+        val cardView: MaterialCardView = mView.cardLayout
         val mDayTextView: TextView = mView.textView_day
         val mWeatherSummaryTextView: TextView = mView.textView_weather_summary
         val mTempMaxTextView: TextView = mView.textView_temperature_max
@@ -90,16 +123,16 @@ class MyItemRecyclerViewAdapter(
 fun getWeatherIconDrawable(icon: ForecastIcon?): Int {
     return when (icon) {
         ForecastIcon.CLEAR_DAY -> {
-            R.drawable.ic_clear_day
+            R.drawable.ic_sun
         }
         ForecastIcon.CLEAR_NIGHT -> {
-            R.drawable.ic_clear_night
+            R.drawable.ic_night
         }
         ForecastIcon.PARTLY_CLOUDY_DAY -> {
-            R.drawable.ic_partly_cloudy_day
+            R.drawable.ic_cloudy_day
         }
         ForecastIcon.PARTLY_CLOUD_NIGHT -> {
-            R.drawable.ic_partly_cloud_night
+            R.drawable.ic_cloudy_night
         }
         ForecastIcon.CLOUDY -> {
             R.drawable.ic_cloudy

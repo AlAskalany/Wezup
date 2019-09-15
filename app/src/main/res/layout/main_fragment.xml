@@ -35,11 +35,13 @@
                 <include
                     android:id="@+id/currently"
                     layout="@layout/currently"
+                    android:isScrollContainer="false"
                     app:model="@{model}" />
 
                 <include
                     android:id="@+id/daily"
-                    layout="@layout/list_daily" />
+                    layout="@layout/list_daily"
+                    android:isScrollContainer="false" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
