@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -70,6 +71,9 @@ class MainFragment : Fragment(), CoroutineScope {
         })
         if (!::recyclerView.isInitialized) {
             recyclerView = binding.daily.recyclerViewMain
+
+            val animator = DefaultItemAnimator()
+            recyclerView.itemAnimator = animator
         }
         if (!::myItemRecyclerViewAdapter.isInitialized) {
             val mutableListOf = mutableListOf<DailyData?>()

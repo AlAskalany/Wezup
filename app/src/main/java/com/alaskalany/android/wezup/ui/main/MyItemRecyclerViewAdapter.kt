@@ -29,6 +29,8 @@ class MyItemRecyclerViewAdapter(
 
     private val mOnClickListener: View.OnClickListener
 
+    private val lastPosition = -1
+
     init {
         mOnClickListener = View.OnClickListener { v ->
             val item = v.tag as DailyData
@@ -47,13 +49,17 @@ class MyItemRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
         if (item?.dummy == true) {
-            animateItemLoading(holder, 1000, true)
+            if (position > lastPosition) {
+                //animateItemLoading(holder, 1000, true)
+            }
             return
         }
 
         holder.mView.clearAnimation()
 
-        animateItemLoaded(holder)
+        if (position > lastPosition) {
+            //animateItemLoaded(holder)
+        }
 
         holder.mDayTextView.text = item?.dayName
         holder.mWeatherSummaryTextView.text = item?.summary?.text
@@ -73,6 +79,10 @@ class MyItemRecyclerViewAdapter(
                 getWeatherIconDrawable(icon?.type)
             )
         )
+    }
+
+    override fun onViewDetachedFromWindow(holder: ViewHolder) {
+        holder.clearAnimation()
     }
 
     private fun animateItemLoaded(holder: ViewHolder) {
@@ -116,6 +126,10 @@ class MyItemRecyclerViewAdapter(
 
         override fun toString(): String {
             return super.toString() + " '" + mDayTextView.text + "'"
+        }
+
+        fun clearAnimation() {
+            cardView.clearAnimation()
         }
     }
 }

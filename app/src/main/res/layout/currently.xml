@@ -55,12 +55,14 @@
                     android:id="@+id/imageView_current_weather_icon"
                     android:layout_width="56dp"
                     android:layout_height="56dp"
+                    android:layout_margin="4dp"
                     app:srcCompat="@drawable/ic_clear_day" />
 
                 <TextView
                     android:id="@+id/textView_temperature"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
                     android:text="@{@string/celsius(model.temperature)}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textSize="36sp"
